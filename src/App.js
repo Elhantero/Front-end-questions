@@ -1,10 +1,13 @@
 import React from 'react';
-import RoutesComponent from './RoutesComponent';
+import { Route, Routes } from 'react-router-dom';
+import Main from './components/pages/Main';
 
 const App = () => (
-  <div>
-    <RoutesComponent />
-  </div>
+  <Routes>
+    <Route path="/" element={<Main />}>
+      <Route path="categories/:categoryName" element={<Main />} />
+    </Route>
+  </Routes>
 );
 
 export default App;

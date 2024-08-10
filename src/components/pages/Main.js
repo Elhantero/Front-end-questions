@@ -1,25 +1,30 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import {
+  BodyWrapper, Header, Nav, Article, Footer,
+} from '../styled/styledComponents';
 import { categoriesOrder } from '../../constants/categories';
-
-const MainWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
+import CategoryBlock from '../common/CategoryBlock';
 
 const Main = () => (
-  <MainWrapper>
-    <Link to="/">home</Link>
-    {categoriesOrder.map((categoryName) => (
-      <Link
-        key={categoryName}
-        to={`/categories/${categoryName}`}
-      >
-        {categoryName}
-      </Link>
-    ))}
-  </MainWrapper>
+  <BodyWrapper>
+    <Header id="pageHeader">Header</Header>
+    <Nav id="mainNav">
+      <Link to="/">home</Link>
+      {categoriesOrder.map((categoryName) => (
+        <Link
+          key={categoryName}
+          to={`/categories/${categoryName}`}
+        >
+          {categoryName}
+        </Link>
+      ))}
+    </Nav>
+    <Article id="mainArticle">
+      <CategoryBlock />
+    </Article>
+    <Footer id="pageFooter">Footer</Footer>
+  </BodyWrapper>
 );
 
 export default Main;
