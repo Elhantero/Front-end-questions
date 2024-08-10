@@ -1,9 +1,10 @@
 import React from 'react';
+import Main from './components/pages/Main';
 
 const App = () => {
     return (
         <div>
-            <h1>Front-end-questions</h1>
+            <Main />
         </div>
     );
 };
