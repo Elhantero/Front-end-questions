@@ -1,12 +1,10 @@
 import React from 'react';
-import Main from './components/pages/Main';
+import RoutesComponent from './RoutesComponent';
 
-const App = () => {
-    return (
-        <div>
-            <Main />
-        </div>
-    );
-};
+const App = () => (
+  <div>
+    <RoutesComponent />
+  </div>
+);
 
 export default App;
