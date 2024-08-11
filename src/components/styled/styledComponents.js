@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const BodyWrapper = styled.div`
+    font-family: sans-serif;
     display: grid;
     grid-template-areas: 
     "header header"
@@ -13,8 +14,7 @@ export const BodyWrapper = styled.div`
     height: 100vh;
     margin: 0;
     > header, footer, article, nav, div {
-        padding: 1.2em;
-        background: yellowgreen;
+        
     }
     @media (max-width: 768px) {
         grid-template-areas: 
@@ -29,15 +29,24 @@ export const BodyWrapper = styled.div`
 
 export const Header = styled.header`
     grid-area: header;
+    background: cadetblue;
+    padding: 1.2em;
 `;
 export const Article = styled.header`
     grid-area: article;
+    background: cadetblue;
+    padding: 1.2em;
 `;
 export const Nav = styled.header`
     grid-area: nav;
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    background: cadetblue;
+    padding: 1.2em;
 `;
 export const Footer = styled.header`
     grid-area: footer;
+    background: cadetblue;
+    padding: 1.2em;
 `;

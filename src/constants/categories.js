@@ -36,25 +36,3 @@ export const Tools = 'Tools';
 export const SoftSkills = 'SoftSkills';
 // парктичні задачі
 export const PracticeTasks = 'PracticeTasks';
-
-export const categoriesOrder = [
-  WebTechnologies,
-  Security,
-  OOP_FP,
-  HTML,
-  CSS,
-  JavaScript,
-  JSInBrowser,
-  AsyncJS,
-  ECMAScript,
-  Accessibility,
-  TypeScript,
-  ReactJS,
-  VueJS,
-  StateManagement,
-  NodeJS,
-  Testing,
-  Tools,
-  SoftSkills,
-  PracticeTasks,
-];

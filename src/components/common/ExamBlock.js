@@ -1,7 +1,6 @@
-/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import flattenDeep from 'lodash/flattenDeep';
 import uniq from 'lodash/uniq';
 import remove from 'lodash/remove';
 import categoryToQuestionsMap from '../../content/categoryToQuestionsMap';
@@ -29,34 +28,38 @@ const QuestionItem = styled.div`
     }
 `;
 
-const CategoryBlock = ({ currentCategoryName = '' }) => {
+const ExamBlock = () => {
+  const [examQuestions, setExamQuestions] = useState([]);
   const [readyQuestionsIdx, setReadyQuestionsIdx] = useState([]);
 
-  useEffect(() => {
-    const lsData = getFromLs(currentCategoryName);
-    if (!lsData?.length) setIntoLs(currentCategoryName, []);
-    setReadyQuestionsIdx(lsData.map(Number));
-  }, [currentCategoryName]);
+  const generateExamQuestions = () => {
+    const allQuestions = flattenDeep(Object.values(categoryToQuestionsMap));
+    const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+    setExamQuestions(shuffled.slice(0, 10));
+  };
 
-  if (!currentCategoryName || !categoryToQuestionsMap?.[currentCategoryName]) return null;
+  useEffect(() => {
+    generateExamQuestions();
+  }, []);
 
   const handleCheckBox = (e, idx) => {
     if (e.target.checked) {
       setReadyQuestionsIdx(uniq([...readyQuestionsIdx, idx]));
-      setIntoLs(currentCategoryName, [...readyQuestionsIdx, idx]);
     } else {
       const newData = [...readyQuestionsIdx];
       remove(newData, (o) => o === idx);
       setReadyQuestionsIdx(newData);
-      setIntoLs(currentCategoryName, newData);
     }
   };
 
   return (
     <Wrapper>
-      {categoryToQuestionsMap[currentCategoryName].map((q, idx) => (
+      <div role="button" onClick={generateExamQuestions}>
+        згенерувати 10 випадкових питань
+      </div>
+      {examQuestions.map((q, idx) => (
         <QuestionItem
-          key={`${currentCategoryName}_${idx}`}
+          key={`exam_${idx}`}
           $isReady={readyQuestionsIdx.includes(idx)}
         >
           <span>{q}</span>
@@ -71,8 +74,4 @@ const CategoryBlock = ({ currentCategoryName = '' }) => {
   );
 };
 
-CategoryBlock.propTypes = {
-  currentCategoryName: PropTypes.string,
-};
-
-export default CategoryBlock;
+export default ExamBlock;
