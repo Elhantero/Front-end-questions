@@ -19,5 +19,4 @@ export default {
   [categories.Testing]: 'Тестування',
   [categories.Tools]: 'Інструменти веб-розробки',
   [categories.SoftSkills]: 'Софт скіли, питання по нетехнічним навикам',
-  [categories.PracticeTasks]: 'Практика, типові задачі',
 };

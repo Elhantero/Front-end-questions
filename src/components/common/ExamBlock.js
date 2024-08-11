@@ -4,7 +4,6 @@ import flattenDeep from 'lodash/flattenDeep';
 import uniq from 'lodash/uniq';
 import remove from 'lodash/remove';
 import categoryToQuestionsMap from '../../content/categoryToQuestionsMap';
-import { getFromLs, setIntoLs } from '../../helpers/localStorage';
 
 const Wrapper = styled.div`
     display: flex;
@@ -33,6 +32,7 @@ const ExamBlock = () => {
   const [readyQuestionsIdx, setReadyQuestionsIdx] = useState([]);
 
   const generateExamQuestions = () => {
+    setReadyQuestionsIdx([]);
     const allQuestions = flattenDeep(Object.values(categoryToQuestionsMap));
     const shuffled = allQuestions.sort(() => 0.5 - Math.random());
     setExamQuestions(shuffled.slice(0, 10));
