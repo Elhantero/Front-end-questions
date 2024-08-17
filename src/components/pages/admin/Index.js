@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
-import AdminDashboard from '../AdminDashboard';
+import { Link } from 'react-router-dom';
+import AdminDashboard from './components/AdminDashboard';
 
 const Wrapper = styled.div`
     display: grid;
-    grid-template-areas:
-         "header"
-         "article"
-         "footer";
+    grid-template-areas: 
+    "header header"
+    "nav article"
+    "footer footer";
     grid-template-rows: 80px 1fr 70px;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(300px, 25%) 1fr;
     grid-row-gap: 10px;
     grid-column-gap: 10px;
     height: 100vh;
@@ -18,6 +19,15 @@ const Wrapper = styled.div`
     font-family: sans-serif;
     > div {
         padding: 15px;
+    }
+    @media (max-width: 768px) {
+        grid-template-areas: 
+          "header"
+          "nav"
+          "article"
+          "footer";
+        grid-template-rows: 80px 1fr 1fr 70px;
+        grid-template-columns: 1fr;
     }
 `;
 
@@ -28,6 +38,19 @@ const Header = styled.div`
     align-items: center;
     font-size: 24px;
     font-weight: bold;
+    gap: 20px;
+    a {
+        text-decoration: none;
+        color: #5667c0;
+    }
+`;
+
+const Nav = styled.header`
+    grid-area: nav;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #E0E5F2;
 `;
 
 const Footer = styled.div`
@@ -42,11 +65,15 @@ const Article = styled.div`
 
 const Index = () => (
   <Wrapper>
-    <Header>Редагування категорій і запитань</Header>
+    <Header>
+        <Link to="/">На головну</Link>
+        <div>/ Редагування запитань</div>
+    </Header>
+    <Nav />
     <Article>
       <AdminDashboard />
     </Article>
-    <Footer>Footer</Footer>
+    <Footer>підготовка до співбесід по фронту, 2024 р.</Footer>
   </Wrapper>
 );
 

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import keyBy from 'lodash/keyBy';
+import remove from "lodash/remove";
 
 export const fetchQuestionsByCategoryId = createAsyncThunk(
   'questions/fetchByCategoryId',
@@ -22,7 +23,28 @@ const questionsSlice = createSlice({
     error: null,
     order: [],
   },
-  reducers: {},
+  reducers: {
+    addQuestion(state, action) {
+      const { questionId, text, categoryId} = action.payload;
+      state.data[questionId] = {
+        questionId,
+        text,
+        categoryId,
+      };
+      state.order.unshift(questionId);
+    },
+    deleteQuestion(state,action) {
+      const { questionId } = action.payload;
+      delete state.data[questionId];
+      const newOrder = [...state.order];
+      remove(newOrder, (o) => Number(o) === Number(questionId));
+      state.order = newOrder;
+    },
+    updateQuestion(state, action) {
+      const { questionId, text } = action.payload;
+      state.data[questionId].text = text;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchQuestionsByCategoryId.pending, (state) => {
@@ -40,4 +62,5 @@ const questionsSlice = createSlice({
   },
 });
 
+export const { addQuestion, deleteQuestion, updateQuestion} = questionsSlice.actions;
 export default questionsSlice.reducer;
