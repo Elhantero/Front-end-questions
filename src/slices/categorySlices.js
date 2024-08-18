@@ -40,10 +40,16 @@ const categorySlice = createSlice({
   initialState: {
     data: {},
     order: [],
+    categoryNameMapToId: {},
+    currentCategoryId: 0,
     status: null,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setCurrentCategoryId: (state, action) => {
+      state.currentCategoryId = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state) => {
@@ -53,6 +59,9 @@ const categorySlice = createSlice({
         state.status = 'resolved';
         state.data = keyBy(action.payload, 'categoryId');
         state.order = action.payload.map((o) => o.categoryId);
+        const categoryNameMapToId = {};
+        action.payload.forEach(o => categoryNameMapToId[o.categoryName] = o.categoryId);
+        state.categoryNameMapToId = categoryNameMapToId;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.status = 'error loading';
@@ -70,5 +79,7 @@ const categorySlice = createSlice({
       });
   },
 });
+
+export const { setCurrentCategoryId } = categorySlice.actions;
 
 export default categorySlice.reducer;

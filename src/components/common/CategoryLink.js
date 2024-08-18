@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import categoryNameTranslates from '../../content/categoryNameTranslates';
 
 const Wrapper = styled(Link)`
     background: ${(props) => (props.$isActive ? '#C7E4FA' : 'azure')};
@@ -32,11 +31,11 @@ const Wrapper = styled(Link)`
     }
 `;
 
-const CategoryLink = ({ categoryName, currentCategoryName = '' }) => {
-  if (!categoryName || !categoryNameTranslates?.[categoryName]) return null;
+const CategoryLink = ({ categoryName, currentCategoryName = '', categoryNameTranslaate = '' }) => {
+  if (!categoryName || !categoryNameTranslaate) return null;
   return (
     <Wrapper to={`/categories/${categoryName}`} $isActive={categoryName === currentCategoryName}>
-      {categoryNameTranslates[categoryName]}
+      {categoryNameTranslaate}
     </Wrapper>
   );
 };

@@ -6,14 +6,16 @@ import {
 } from '../styled/styledComponents';
 import CategoryBlock from '../common/CategoryBlock';
 import CategoryLink from '../common/CategoryLink';
-import ExamBlock from '../common/ExamBlock';
-import { fetchCategories } from '../../slices/categorySlices';
-import {selectCategories, selectCategoriesOrder} from '../../selectors/categoriesSelectors';
+import { fetchCategories, setCurrentCategoryId } from '../../slices/categorySlices';
+import { selectCategories, selectCategoriesOrder, selectCategoryNameMapToId } from '../../selectors/categoriesSelectors';
 
-const Main = ({ categories, categoriesOrder }) => {
+const Main = ({ categories, categoriesOrder, categoryNameMapToId }) => {
   const { categoryName: currentCategoryName } = useParams();
-  const { pathname } = useLocation();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setCurrentCategoryId(categoryNameMapToId?.[currentCategoryName]));
+  }, [categoryNameMapToId, currentCategoryName, dispatch]);
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -21,25 +23,18 @@ const Main = ({ categories, categoriesOrder }) => {
 
   return (
     <BodyWrapper>
-      <Header id="pageHeader">
-        <Link to="exam">
-          пройти екзамен, 10 випадкових запитань
-        </Link>
-        <Link to="adminDashboard">
-          адмінка
-        </Link>
-      </Header>
+      <Header id="pageHeader" />
       <Nav id="mainNav">
         {categoriesOrder.map((id) => (
           <CategoryLink
             key={id}
             categoryName={categories[id].categoryName}
+            categoryNameTranslaate={categories[id].name}
             currentCategoryName={currentCategoryName}
           />
         ))}
       </Nav>
       <Article id="mainArticle">
-        {pathname === '/exam' ? <ExamBlock /> : null}
         {currentCategoryName ? <CategoryBlock currentCategoryName={currentCategoryName} /> : null}
       </Article>
       <Footer id="pageFooter">Footer</Footer>
@@ -50,6 +45,7 @@ const Main = ({ categories, categoriesOrder }) => {
 const mapStateToProps = (state) => ({
   categories: selectCategories(state),
   categoriesOrder: selectCategoriesOrder(state),
+  categoryNameMapToId: selectCategoryNameMapToId(state),
 });
 
 export default connect(mapStateToProps)(Main);

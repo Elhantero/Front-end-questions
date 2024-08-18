@@ -41,7 +41,7 @@ export const Header = styled.div`
     }
 `;
 
-export const Nav = styled.header`
+export const Nav = styled.div`
     grid-area: nav;
     display: flex;
     flex-direction: column;
