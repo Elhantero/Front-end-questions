@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import React, {useState} from 'react';
+import {connect, useDispatch} from 'react-redux';
 import styled from 'styled-components';
-import { createQuestion } from '../../slices/questionsSlices';
-import { selectCurrentCategoryId } from '../../selectors/categoriesSelectors';
+import {createQuestion} from '../../slices/questionsSlices';
+import {selectCurrentCategoryId} from '../../selectors/categoriesSelectors';
 
 const Wrapper = styled.div`
     display: flex;
@@ -10,6 +10,7 @@ const Wrapper = styled.div`
     gap: 15px;
     background: ghostwhite;
     padding: 15px;
+
     input[type="text"] {
         height: 40px;
         font-size: 16px;
@@ -29,47 +30,49 @@ const Btn = styled.button`
     border-radius: 5px;
     background-color: #2ecc71;
     white-space: nowrap;
-  &:hover {
-    background-color: #27ae60;
-  }
-  &:disabled {
-    background-color: #a5a5a5;
-  }
+
+    &:hover {
+        background-color: #27ae60;
+    }
+
+    &:disabled {
+        background-color: #a5a5a5;
+    }
 `;
 
-const AddQuestion = ({ currentCategoryId }) => {
-  const [questionText, setQuestionText] = useState('');
-  const dispatch = useDispatch();
+const AddQuestion = ({currentCategoryId}) => {
+    const [questionText, setQuestionText] = useState('');
+    const dispatch = useDispatch();
 
-  const handleQuestionText = (e) => setQuestionText(e.target.value);
+    const handleQuestionText = (e) => setQuestionText(e.target.value);
 
-  const onClickSaveQuestion = () => {
-    if (currentCategoryId && questionText) {
-      dispatch(createQuestion({
-        categoryId: currentCategoryId,
-        text: questionText,
-      }));
-      setQuestionText('');
-    }
-  };
+    const onClickSaveQuestion = () => {
+        if (currentCategoryId && questionText) {
+            dispatch(createQuestion({
+                categoryId: currentCategoryId,
+                text: questionText,
+            }));
+            setQuestionText('');
+        }
+    };
 
-  return (
-    <Wrapper>
-      <input
-        type="text"
-        value={questionText}
-        onChange={handleQuestionText}
-        placeholder="Введіть текст запитання"
-      />
-      <Btn disabled={!questionText} onClick={onClickSaveQuestion}>
-        Додати нове запитання
-      </Btn>
-    </Wrapper>
-  );
+    return (
+        <Wrapper>
+            <input
+                type="text"
+                value={questionText}
+                onChange={handleQuestionText}
+                placeholder="Введіть текст запитання"
+            />
+            <Btn disabled={!questionText} onClick={onClickSaveQuestion}>
+                Додати нове запитання
+            </Btn>
+        </Wrapper>
+    );
 };
 
 const mapStateToProps = (state) => ({
-  currentCategoryId: selectCurrentCategoryId(state),
+    currentCategoryId: selectCurrentCategoryId(state),
 });
 
 export default connect(mapStateToProps)(AddQuestion);

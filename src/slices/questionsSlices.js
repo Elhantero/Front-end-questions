@@ -51,6 +51,19 @@ const questionsSlice = createSlice({
       const newOrder = [...state.order];
       remove(newOrder, (o) => Number(o) === Number(questionId));
       state.order = newOrder;
+      try {
+        const requestOptions = {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            questionId,
+          }),
+        };
+        fetch('http://localhost:5000/questions/delete', requestOptions)
+            .catch((err) => console.log(err));
+      } catch (error) {
+        console.log(error, 'deleteQuestion');
+      }
     },
     updateQuestion: (state, action) => {
       const {
@@ -72,7 +85,7 @@ const questionsSlice = createSlice({
         fetch('http://localhost:5000/questions/update', requestOptions)
           .catch((err) => console.log(err, 'questionsSlices.js'));
       } catch (error) {
-        console.log(error, 'questionsSlices.js');
+        console.log(error, 'updateQuestion');
       }
     },
   },
