@@ -47,30 +47,30 @@ const Wrapper = styled.div`
     }
 `;
 
-const Rating = ({rating, handleRating, questionId}) => {
-    const order = [...Array(10).keys()].map((o) => o + 1).reverse();
-    return (
-        <Wrapper>
-            <div className="rating">
-                {order.map((value) => (
-                    <>
-                        <input
-                            type="radio"
-                            name={`rating_${questionId}`}
-                            id={`rating_${questionId}_${value}`}
-                            onChange={handleRating}
-                            value={value}
-                            checked={Number(rating) === value}
-                        />
-                        <label
-                            htmlFor={`rating_${questionId}_${value}`}
-                            title="Важливість і пріоритет питання, впливає на порядок видачі"
-                        />
-                    </>
-                ))}
-            </div>
-        </Wrapper>
-    );
+const Rating = ({ rating, handleRating, questionId }) => {
+  const order = [...Array(10).keys()].map((o) => o + 1).reverse();
+  return (
+    <Wrapper>
+      <div className="rating">
+        {order.map((value) => (
+          <>
+            <input
+              type="radio"
+              name={`rating_${questionId}`}
+              id={`rating_${questionId}_${value}`}
+              onChange={handleRating}
+              value={value}
+              checked={Number(rating) === value}
+            />
+            <label
+              htmlFor={`rating_${questionId}_${value}`}
+              title="Важливість і пріоритет питання, впливає на порядок видачі"
+            />
+          </>
+        ))}
+      </div>
+    </Wrapper>
+  );
 };
 
 export default Rating;

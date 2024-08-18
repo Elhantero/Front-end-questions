@@ -60,7 +60,7 @@ const questionsSlice = createSlice({
           }),
         };
         fetch('http://localhost:5000/questions/delete', requestOptions)
-            .catch((err) => console.log(err));
+          .catch((err) => console.log(err));
       } catch (error) {
         console.log(error, 'deleteQuestion');
       }

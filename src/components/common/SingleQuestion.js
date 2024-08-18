@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
-import {connect, useDispatch} from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import {selectQuestionById} from '../../selectors/questionsSelectors';
-import {deleteQuestion, updateQuestion} from '../../slices/questionsSlices';
+import { selectQuestionById } from '../../selectors/questionsSelectors';
+import { deleteQuestion, updateQuestion } from '../../slices/questionsSlices';
 import Rating from './Rating';
 
 const Wrapper = styled.div`
@@ -18,18 +18,18 @@ const Wrapper = styled.div`
 `;
 
 const typeToCssMap = {
-    save: {
-        bgColor: '#2ecc71',
-        bgColorHover: '#27ae60',
-    },
-    edit: {
-        bgColor: '#03b1d2',
-        bgColorHover: '#04839a',
-    },
-    del: {
-        bgColor: '#e32626',
-        bgColorHover: '#af1515',
-    },
+  save: {
+    bgColor: '#2ecc71',
+    bgColorHover: '#27ae60',
+  },
+  edit: {
+    bgColor: '#03b1d2',
+    bgColorHover: '#04839a',
+  },
+  del: {
+    bgColor: '#e32626',
+    bgColorHover: '#af1515',
+  },
 };
 
 const Btn = styled.button`
@@ -113,104 +113,104 @@ const BtnWrapper = styled.div`
     }
 `;
 
-const SingleQuestion = ({questionId, question}) => {
-    const {text, readyStatus, rating} = question;
-    const [questionText, setQuestionText] = useState('');
-    const [isEditNow, setIsEditNow] = useState(false);
-    const [showSettings, setShowSettings] = useState(false);
+const SingleQuestion = ({ questionId, question }) => {
+  const { text, readyStatus, rating } = question;
+  const [questionText, setQuestionText] = useState('');
+  const [isEditNow, setIsEditNow] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
 
-    const dispatch = useDispatch();
-    const saveQuestion = (params = {}) => dispatch(updateQuestion(params));
+  const dispatch = useDispatch();
+  const saveQuestion = (params = {}) => dispatch(updateQuestion(params));
 
-    useEffect(() => {
-        setQuestionText(text);
-    }, [text]);
+  useEffect(() => {
+    setQuestionText(text);
+  }, [text]);
 
-    useEffect(() => {
-        setQuestionText(text);
-    }, [text]);
+  useEffect(() => {
+    setQuestionText(text);
+  }, [text]);
 
-    const handleRating = (e) => saveQuestion({questionId, rating: e.target.value});
-    const handleReadyStatus = (e) => saveQuestion({questionId, readyStatus: e.target.checked});
-    const handleQuestionTextArea = (e) => {
-        setQuestionText(e.target.value);
-    };
+  const handleRating = (e) => saveQuestion({ questionId, rating: e.target.value });
+  const handleReadyStatus = (e) => saveQuestion({ questionId, readyStatus: e.target.checked });
+  const handleQuestionTextArea = (e) => {
+    setQuestionText(e.target.value);
+  };
 
-    const onClickEdit = () => setIsEditNow(true);
+  const onClickEdit = () => setIsEditNow(true);
 
-    const onClickSave = () => {
-        setIsEditNow(false);
-        if (questionText && questionText !== text) {
-            saveQuestion({questionId, text: questionText});
-        }
-    };
+  const onClickSave = () => {
+    setIsEditNow(false);
+    if (questionText && questionText !== text) {
+      saveQuestion({ questionId, text: questionText });
+    }
+  };
 
-    const handleShowHideSettings = (e) => setShowSettings(e.target.checked);
+  const handleShowHideSettings = (e) => setShowSettings(e.target.checked);
 
-    const onClickDelete = () => {
-        const reallyDelete = window.confirm('Видалити це питання?');
-        if (!reallyDelete) return;
-        dispatch(deleteQuestion({questionId}))
-    };
+  const onClickDelete = () => {
+    const reallyDelete = window.confirm('Видалити це питання?');
+    if (!reallyDelete) return;
+    dispatch(deleteQuestion({ questionId }));
+  };
 
-    return (
-        <Wrapper readyStatus={readyStatus} isEditNow={isEditNow}>
+  return (
+    <Wrapper readyStatus={readyStatus} isEditNow={isEditNow}>
 
-            <TopLine>
-                <div>
-                    <input
-                        disabled={!isEditNow}
-                        type="text"
-                        value={questionText}
-                        onChange={handleQuestionTextArea}
-                    />
-                </div>
+      <TopLine>
+        <div>
+          <input
+            disabled={!isEditNow}
+            type="text"
+            value={questionText}
+            onChange={handleQuestionTextArea}
+          />
+        </div>
 
-                <div>
-                    <input hidden type="checkbox" name={questionId} id={questionId} onChange={handleShowHideSettings}/>
-                    <Label htmlFor={questionId}>
-                        {showSettings ? '-' : '+'}
-                    </Label>
-                </div>
-            </TopLine>
+        <div>
+          <input hidden type="checkbox" name={questionId} id={questionId} onChange={handleShowHideSettings} />
+          <Label htmlFor={questionId}>
+            {showSettings ? '-' : '+'}
+          </Label>
+        </div>
+      </TopLine>
 
-            {
+      {
                 showSettings ? (
-                    <BotLine>
-                        <Rating rating={rating} handleRating={handleRating} questionId={questionId}/>
+                  <BotLine>
+                    <Rating rating={rating} handleRating={handleRating} questionId={questionId} />
 
-                        <BtnWrapper>
-                            <input
-                                type="checkbox"
-                                onChange={handleReadyStatus}
-                                checked={readyStatus}
-                                title="Зміна статусу готовності, готові питання виводяться в кінці"
-                            />
-                            {
+                    <BtnWrapper>
+                      <input
+                        type="checkbox"
+                        onChange={handleReadyStatus}
+                        checked={readyStatus}
+                        title="Зміна статусу готовності, готові питання виводяться в кінці"
+                      />
+                      {
                                 isEditNow
-                                    ? (
-                                        <Btn
-                                            btnType="save"
-                                            onClick={onClickSave}
-                                            disabled={!questionText || questionText === text}
-                                        >
-                                            Save
-                                        </Btn>
-                                    )
-                                    : <Btn btnType="edit" onClick={onClickEdit}>Edit</Btn>
+                                  ? (
+                                    <Btn
+                                      btnType="save"
+                                      onClick={onClickSave}
+                                      disabled={!questionText || questionText === text}
+                                    >
+                                      Save
+                                    </Btn>
+                                  )
+                                  : <Btn btnType="edit" onClick={onClickEdit}>Edit</Btn>
                             }
-                            <Btn btnType="del" onClick={onClickDelete}>Del</Btn>
-                        </BtnWrapper>
-                    </BotLine>
+                      <Btn btnType="del" onClick={onClickDelete}>Del</Btn>
+                    </BtnWrapper>
+                  </BotLine>
                 ) : null
             }
 
-        </Wrapper>
-    );
+    </Wrapper>
+  );
 };
 
-const mapStateToProps = (state, {questionId}) => ({
-    question: selectQuestionById(state, questionId),
+const mapStateToProps = (state, { questionId }) => ({
+  question: selectQuestionById(state, questionId),
 });
 
 export default connect(mapStateToProps)(SingleQuestion);

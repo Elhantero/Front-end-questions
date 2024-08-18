@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Wrapper = styled(Link)`
@@ -36,18 +36,18 @@ const Wrapper = styled(Link)`
     }
 `;
 
-const CategoryLink = ({categoryName, currentCategoryName = '', categoryNameTranslaate = ''}) => {
-    if (!categoryName || !categoryNameTranslaate) return null;
-    return (
-        <Wrapper to={`/categories/${categoryName}`} $isActive={categoryName === currentCategoryName}>
-            {categoryNameTranslaate}
-        </Wrapper>
-    );
+const CategoryLink = ({ categoryName, currentCategoryName = '', categoryNameTranslaate = '' }) => {
+  if (!categoryName || !categoryNameTranslaate) return null;
+  return (
+    <Wrapper to={`/categories/${categoryName}`} $isActive={categoryName === currentCategoryName}>
+      {categoryNameTranslaate}
+    </Wrapper>
+  );
 };
 
 CategoryLink.propTypes = {
-    categoryName: PropTypes.string.isRequired,
-    currentCategoryName: PropTypes.string.isRequired,
+  categoryName: PropTypes.string.isRequired,
+  currentCategoryName: PropTypes.string.isRequired,
 };
 
 export default CategoryLink;
