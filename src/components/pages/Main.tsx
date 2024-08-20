@@ -8,7 +8,7 @@ import CategoryBlock from '../common/CategoryBlock';
 import CategoryLink from '../common/CategoryLink';
 import { fetchCategories, setCurrentCategoryId } from '../../slices/categorySlices';
 import { selectCategories, selectCategoriesOrder, selectCategoryNameMapToId } from '../../selectors/categoriesSelectors';
-import {CategoryIdToDataMap, CategoryNameToIdMap} from "../../helpers/tsTypes/reduxState/categories/categoriesState";
+import {CategoryIdToDataMap, CategoryNameToIdMap} from "../../helpers/tsTypes/reduxState/categories";
 import {AppDispatch, RootState} from "../../store";
 
 const Main = (
