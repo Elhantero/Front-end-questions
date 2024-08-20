@@ -4,20 +4,35 @@ import styled from 'styled-components';
 import { selectQuestionById } from '../../selectors/questionsSelectors';
 import { deleteQuestion, updateQuestion } from '../../slices/questionsSlices';
 import Rating from './Rating';
+import * as questionsTypes from "../../helpers/tsTypes/reduxState/questions";
+import { RootState} from "../../store";
 
-const Wrapper = styled.div`
+interface WrapperProps {
+  $readyStatus?: boolean,
+  $isEditNow?: boolean,
+}
+
+const Wrapper = styled.div<WrapperProps>`
     display: flex;
     gap: 15px;
     flex-direction: column;
-    background: ${((props) => (props.readyStatus && !props.isEditNow ? 'deepskyblue' : 'ghostwhite'))};
+    background: ${((props) => (props.$readyStatus && !props.$isEditNow ? 'deepskyblue' : 'ghostwhite'))};
     padding: 15px;
 
     input[type='text'] {
-        text-decoration: ${((props) => (props.readyStatus && !props.isEditNow ? 'line-through' : ''))};
+        text-decoration: ${((props) => (props.$readyStatus && !props.$isEditNow ? 'line-through' : ''))};
     }
 `;
 
-const typeToCssMap = {
+interface BtnDefaultStyle {
+  bgColor: string,
+  bgColorHover: string,
+}
+interface BtnStyles {
+  [key: string]: BtnDefaultStyle
+}
+
+const typeToCssMap: BtnStyles  = {
   save: {
     bgColor: '#2ecc71',
     bgColorHover: '#27ae60',
@@ -32,20 +47,24 @@ const typeToCssMap = {
   },
 };
 
-const Btn = styled.button`
+interface BtnProps {
+  $btnType?: string
+}
+
+const Btn = styled.button<BtnProps>`
     font-size: 18px;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     color: #fff;
     border-radius: 5px;
-    background-color: ${(props) => (props.btnType ? typeToCssMap?.[props.btnType].bgColor : '#2ecc71')};
+    background-color: ${(props) => (props.$btnType ? typeToCssMap?.[props.$btnType as keyof {}].bgColor : '#2ecc71')};
     white-space: nowrap;
     width: 70px;
     height: 40px;
 
     &:hover {
-        background-color: ${(props) => (props.btnType ? typeToCssMap?.[props.btnType].bgColorHover : '#27ae60')};;
+        background-color: ${(props) => (props.$btnType ? typeToCssMap?.[props.$btnType  as keyof {}].bgColorHover : '#27ae60')};;
     }
 
     &:disabled {
@@ -53,7 +72,11 @@ const Btn = styled.button`
     }
 `;
 
-const Label = styled.label`
+interface LabelProps {
+  $readyStatus?: boolean,
+}
+
+const Label = styled.label<LabelProps>`
     width: 40px;
     height: 40px;
     display: flex;
@@ -65,10 +88,10 @@ const Label = styled.label`
     cursor: pointer;
     user-select: none;
     border-radius: 50%;
-    color: ${({ readyStatus }) => readyStatus ? '#fff': '#73beff'};
-    border: 1px solid ${({ readyStatus }) => readyStatus ? '#fff': '#73beff'};
+    color: ${({ $readyStatus }) => $readyStatus ? '#fff': '#73beff'};
+    border: 1px solid ${({ $readyStatus }) => $readyStatus ? '#fff': '#73beff'};
     .arrow {
-      border: solid ${({ readyStatus }) => readyStatus ? '#fff': '#73beff'};
+      border: solid ${({ $readyStatus }) => $readyStatus ? '#fff': '#73beff'};
       border-width: 0 3px 3px 0;
       display: inline-block;
       padding: 3px;
@@ -131,8 +154,8 @@ const BtnWrapper = styled.div`
     }
 `;
 
-const SingleQuestion = ({ questionId, question }) => {
-  const { text, readyStatus, rating } = question;
+const SingleQuestion = ({ questionId, question } : { questionId: number, question: questionsTypes.SingleQuestion }) => {
+  const { text, readyStatus, rating = 0 } = question;
   const [questionText, setQuestionText] = useState('');
   const [isEditNow, setIsEditNow] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -148,9 +171,9 @@ const SingleQuestion = ({ questionId, question }) => {
     setQuestionText(text);
   }, [text]);
 
-  const handleRating = (e) => saveQuestion({ questionId, rating: e.target.value });
-  const handleReadyStatus = (e) => saveQuestion({ questionId, readyStatus: e.target.checked });
-  const handleQuestionTextArea = (e) => {
+  const handleRating = (e: React.ChangeEvent<HTMLInputElement>) => saveQuestion({ questionId, rating: e.target.value });
+  const handleReadyStatus = (e: React.ChangeEvent<HTMLInputElement>) => saveQuestion({ questionId, readyStatus: e.target.checked });
+  const handleQuestionTextArea = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuestionText(e.target.value);
   };
 
@@ -163,7 +186,7 @@ const SingleQuestion = ({ questionId, question }) => {
     }
   };
 
-  const handleShowHideSettings = (e) => setShowSettings(e.target.checked);
+  const handleShowHideSettings = (e: React.ChangeEvent<HTMLInputElement>) => setShowSettings(e.target.checked);
 
   const onClickDelete = () => {
     const reallyDelete = window.confirm('Видалити це питання?');
@@ -172,7 +195,10 @@ const SingleQuestion = ({ questionId, question }) => {
   };
 
   return (
-    <Wrapper readyStatus={readyStatus} isEditNow={isEditNow}>
+    <Wrapper
+      $readyStatus={!!readyStatus}
+      $isEditNow={isEditNow}
+    >
 
       <TopLine>
         <div>
@@ -185,8 +211,14 @@ const SingleQuestion = ({ questionId, question }) => {
         </div>
 
         <div>
-          <input hidden type="checkbox" name={questionId} id={questionId} onChange={handleShowHideSettings} />
-          <Label htmlFor={questionId} readyStatus={readyStatus}>
+          <input
+              hidden
+              type="checkbox"
+              name={questionId.toString()}
+              id={questionId.toString()}
+              onChange={handleShowHideSettings}
+          />
+          <Label htmlFor={questionId.toString()} $readyStatus={!!readyStatus}>
             <i className={`arrow ${showSettings ? 'up' : 'down' }`} />
           </Label>
         </div>
@@ -195,29 +227,33 @@ const SingleQuestion = ({ questionId, question }) => {
       {
         showSettings ? (
           <BotLine>
-            <Rating rating={rating} handleRating={handleRating} questionId={questionId} />
+            <Rating
+              rating={rating}
+              handleRating={handleRating}
+              questionId={questionId}
+            />
 
             <BtnWrapper>
               <input
                 type="checkbox"
                 onChange={handleReadyStatus}
-                checked={readyStatus}
+                checked={!!readyStatus}
                 title="Зміна статусу готовності, готові питання виводяться в кінці"
               />
               {
                 isEditNow
                   ? (
                     <Btn
-                      btnType="save"
+                      $btnType="save"
                       onClick={onClickSave}
                       disabled={!questionText || questionText === text}
                     >
                       Save
                     </Btn>
                   )
-                  : <Btn btnType="edit" onClick={onClickEdit}>Edit</Btn>
+                  : <Btn $btnType="edit" onClick={onClickEdit}>Edit</Btn>
               }
-              <Btn btnType="del" onClick={onClickDelete}>Del</Btn>
+              <Btn $btnType="del" onClick={onClickDelete}>Del</Btn>
             </BtnWrapper>
           </BotLine>
         ) : null
@@ -226,7 +262,7 @@ const SingleQuestion = ({ questionId, question }) => {
   );
 };
 
-const mapStateToProps = (state, { questionId }) => ({
+const mapStateToProps = (state: RootState, { questionId } : { questionId: number }) => ({
   question: selectQuestionById(state, questionId),
 });
 

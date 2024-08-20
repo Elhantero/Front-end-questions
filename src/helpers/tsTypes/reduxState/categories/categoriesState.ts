@@ -15,11 +15,9 @@ export interface Data {
     [key: string]: CategoryIdToDataMap
 }
 
-export interface Categories {
+export interface CategoriesState {
     data: Data,
     order: number[],
     categoryNameMapToId: CategoryNameToIdMap,
     currentCategoryId: number,
-    status: string,
-    error:string,
 }

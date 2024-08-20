@@ -8,9 +8,8 @@ import CategoryBlock from '../common/CategoryBlock';
 import CategoryLink from '../common/CategoryLink';
 import { fetchCategories, setCurrentCategoryId } from '../../slices/categorySlices';
 import { selectCategories, selectCategoriesOrder, selectCategoryNameMapToId } from '../../selectors/categoriesSelectors';
-import MainStore from '../../helpers/tsTypes/reduxState/mainStore';
-import {CategoryIdToDataMap, CategoryNameToIdMap} from "../../helpers/tsTypes/reduxState/categories/categories";
-import {AppDispatch} from "../../store";
+import {CategoryIdToDataMap, CategoryNameToIdMap} from "../../helpers/tsTypes/reduxState/categories/categoriesState";
+import {AppDispatch, RootState} from "../../store";
 
 const Main = (
     {
@@ -29,7 +28,7 @@ const Main = (
 
   useEffect(() => {
       if (categoryName) dispatch(setCurrentCategoryId(categoryNameMapToId?.[categoryName]));
-  }, [categoryName]);
+  });
 
 
   useEffect(() => {
@@ -57,7 +56,7 @@ const Main = (
   );
 };
 
-const mapStateToProps = (state: MainStore) => ({
+const mapStateToProps = (state: RootState) => ({
   categories: selectCategories(state),
   categoriesOrder: selectCategoriesOrder(state),
   categoryNameMapToId: selectCategoryNameMapToId(state),

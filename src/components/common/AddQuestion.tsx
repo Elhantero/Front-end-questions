@@ -3,6 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { createQuestion } from '../../slices/questionsSlices';
 import { selectCurrentCategoryId } from '../../selectors/categoriesSelectors';
+import {RootState, AppDispatch} from "../../store";
 
 const Wrapper = styled.div`
     display: flex;
@@ -40,11 +41,11 @@ const Btn = styled.button`
     }
 `;
 
-const AddQuestion = ({ currentCategoryId }) => {
+const AddQuestion = ({ currentCategoryId } : { currentCategoryId: number }) => {
   const [questionText, setQuestionText] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleQuestionText = (e) => setQuestionText(e.target.value);
+  const handleQuestionText = (e: React.ChangeEvent<HTMLInputElement>) => setQuestionText(e.target.value);
 
   const onClickSaveQuestion = () => {
     if (currentCategoryId && questionText) {
@@ -71,7 +72,7 @@ const AddQuestion = ({ currentCategoryId }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   currentCategoryId: selectCurrentCategoryId(state),
 });
 

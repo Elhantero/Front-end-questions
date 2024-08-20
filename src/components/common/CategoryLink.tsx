@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Wrapper = styled(Link)`
+interface WrapperProps {
+  $isActive: boolean
+}
+
+const Wrapper = styled(Link)<WrapperProps>`
     background: ${(props) => (props.$isActive ? '#C7E4FA' : 'azure')};
     cursor: pointer;
 
@@ -36,7 +40,12 @@ const Wrapper = styled(Link)`
     }
 `;
 
-const CategoryLink = ({ categoryName, currentCategoryName = '', categoryNameTranslaate = '' }) => {
+const CategoryLink = (
+    { categoryName, currentCategoryName = '', categoryNameTranslaate = '' } : {
+      categoryName: string,
+      currentCategoryName: string | undefined,
+      categoryNameTranslaate: string,
+    }) => {
   if (!categoryName || !categoryNameTranslaate) return null;
   return (
     <Wrapper to={`/categories/${categoryName}`} $isActive={categoryName === currentCategoryName}>

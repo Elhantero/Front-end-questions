@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import keyBy from 'lodash/keyBy';
 import remove from 'lodash/remove';
+import {SingleQuestion, QuestionState, Data} from "../helpers/tsTypes/reduxState/questions";
+import {QueryStatus} from "@reduxjs/toolkit/query";
 
 export const fetchQuestionsByCategoryId = createAsyncThunk(
   'questions/fetchByCategoryId',
-  async ({ categoryId }, { rejectWithValue }) => {
+  async ( { categoryId } : { categoryId: number }, { rejectWithValue }) => {
     try {
       const response = await fetch(`http://localhost:5000/questions/${categoryId}`);
       if (!response.ok) throw new Error('Server Error!');
@@ -17,7 +19,7 @@ export const fetchQuestionsByCategoryId = createAsyncThunk(
 
 export const createQuestion = createAsyncThunk(
   'questions/create',
-  async ({ categoryId, text }, { rejectWithValue }) => {
+  async ({ categoryId, text } : { categoryId: number, text: string }, { rejectWithValue }) => {
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -41,11 +43,9 @@ const questionsSlice = createSlice({
   initialState: {
     data: {},
     order: [],
-    status: null,
-    error: null,
   },
   reducers: {
-    deleteQuestion: (state, action) => {
+    deleteQuestion: (state: QuestionState, action) => {
       const { questionId } = action.payload;
       delete state.data[questionId];
       const newOrder = [...state.order];
@@ -65,22 +65,21 @@ const questionsSlice = createSlice({
         console.log(error, 'deleteQuestion');
       }
     },
-    updateQuestion: (state, action) => {
-      const {
-        questionId, ...otherParams
-      } = action.payload;
-      if (!questionId) return;
+    updateQuestion: (state: QuestionState, action) => {
+      const { ...question } : SingleQuestion = action.payload;
+      if (!question.questionId) return;
       console.log(action.payload, 'questionsSlices.ts', 73);
-      Object.keys(otherParams).forEach((key) => {
-        if (otherParams[key] !== undefined) state.data[questionId][key] = otherParams[key];
+      (Object.keys(question)).forEach((key: string) => {
+        if (question[key as keyof {}] !== undefined) {
+          state.data[question.questionId][key as keyof {}] = question[key as keyof {}];
+        }
       });
       try {
         const requestOptions = {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            questionId,
-            ...otherParams,
+              ...question
           }),
         };
         fetch('http://localhost:5000/questions/update', requestOptions)
@@ -92,25 +91,17 @@ const questionsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchQuestionsByCategoryId.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchQuestionsByCategoryId.fulfilled, (state, action) => {
-        state.status = 'resolved';
+      .addCase(fetchQuestionsByCategoryId.fulfilled, (state: QuestionState, action) => {
         state.data = keyBy(action.payload, 'questionId');
-        const order = action.payload.map((o) => Number(o.questionId));
+        const order = action.payload.map((o: SingleQuestion) => Number(o.questionId));
         // сортування по рейтингу
-        order.sort((a, b) => Number(state.data[b].rating) - Number(state.data[a].rating));
+        order.sort((a: number, b: number) => Number(state.data[b].rating) - Number(state.data[a].rating));
         // сортування щоб готові питання були в кінці
-        order.sort((a, b) => Number(state.data[a].readyStatus) - Number(state.data[b].readyStatus));
+        order.sort((a: number, b: number) => Number(state.data[a].readyStatus) - Number(state.data[b].readyStatus));
         state.order = order;
       })
-      .addCase(fetchQuestionsByCategoryId.rejected, (state, action) => {
-        state.status = 'error loading';
-        state.error = action.error;
-      })
-      .addCase(createQuestion.fulfilled, (state, action) => {
-        const { categoryId, questionId, text } = action.payload;
+      .addCase(createQuestion.fulfilled, (state: QuestionState, action) => {
+        const { categoryId, questionId, text }: SingleQuestion = action.payload;
         if (questionId) {
           state.data[questionId] = {
             questionId,
@@ -123,5 +114,5 @@ const questionsSlice = createSlice({
   },
 });
 
-export const { addQuestion, deleteQuestion, updateQuestion } = questionsSlice.actions;
+export const { deleteQuestion, updateQuestion } = questionsSlice.actions;
 export default questionsSlice.reducer;

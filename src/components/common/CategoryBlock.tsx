@@ -6,6 +6,7 @@ import { selectQuestionsOrder } from '../../selectors/questionsSelectors';
 import { fetchQuestionsByCategoryId } from '../../slices/questionsSlices';
 import SingleQuestion from './SingleQuestion';
 import AddQuestion from './AddQuestion';
+import { AppDispatch, RootState} from "../../store";
 
 const Wrapper = styled.div`
     display: flex;
@@ -13,12 +14,20 @@ const Wrapper = styled.div`
     gap: 10px;
 `;
 
-const CategoryBlock = ({ currentCategoryId = 0, questionsOrder = [] }) => {
-  const dispatch = useDispatch();
+const CategoryBlock = (
+    {
+      currentCategoryId = 0,
+      questionsOrder = [],
+    } : {
+      currentCategoryId: number,
+      questionsOrder: number[],
+    }
+) => {
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(fetchQuestionsByCategoryId({ categoryId: currentCategoryId }));
-  }, [currentCategoryId, dispatch]);
+  }, [currentCategoryId]);
 
   return (
     <Wrapper>
@@ -33,7 +42,7 @@ const CategoryBlock = ({ currentCategoryId = 0, questionsOrder = [] }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: RootState) => ({
   currentCategoryId: selectCurrentCategoryId(state),
   questionsOrder: selectQuestionsOrder(state),
 });

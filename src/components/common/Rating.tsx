@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -47,13 +47,21 @@ const Wrapper = styled.div`
     }
 `;
 
-const Rating = ({ rating, handleRating, questionId }) => {
-  const order = [...Array(10).keys()].map((o) => o + 1).reverse();
+const Rating = (
+    { rating, handleRating, questionId } : {
+        rating: number,
+        handleRating: (e: React.ChangeEvent<HTMLInputElement>) => {},
+        questionId: number
+    }
+) => {
+
+  const order:number[] = [];
+  for(let i = 10; i > 0; i--) order.push(i);
   return (
     <Wrapper>
       <div className="rating">
         {order.map((value) => (
-          <>
+          <Fragment key={value}>
             <input
               type="radio"
               name={`rating_${questionId}`}
@@ -66,7 +74,7 @@ const Rating = ({ rating, handleRating, questionId }) => {
               htmlFor={`rating_${questionId}_${value}`}
               title="Важливість і пріоритет питання, впливає на порядок видачі"
             />
-          </>
+          </Fragment>
         ))}
       </div>
     </Wrapper>

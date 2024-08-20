@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import keyBy from 'lodash/keyBy';
-import { Categories } from '../helpers/tsTypes/reduxState/categories/categories';
+import {CategoriesState, CategoryNameToIdMap, SingleCategory} from '../helpers/tsTypes/reduxState/categories/categoriesState';
 
 export const fetchCategories = createAsyncThunk(
   'categories/fetchAll',
@@ -9,7 +9,7 @@ export const fetchCategories = createAsyncThunk(
       const response = await fetch('http://localhost:5000/categories');
       if (!response.ok) throw new Error('Server Error!');
       return await response.json();
-    } catch (error) {
+    } catch (error: any) {
       return rejectWithValue(error.message);
     }
   },
@@ -53,22 +53,14 @@ const categorySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchCategories.pending, (state: Categories) => {
-        state.status = 'loading';
-      })
-      .addCase(fetchCategories.fulfilled, (state: Categories, action) => {
-        state.status = 'resolved';
+      .addCase(fetchCategories.fulfilled, (state: CategoriesState, action) => {
         state.data = keyBy(action.payload, 'categoryId');
-        state.order = action.payload.map((o) => o.categoryId);
-        const categoryNameMapToId = {};
-        action.payload.forEach((o) => categoryNameMapToId[o.categoryName] = o.categoryId);
+        state.order = action.payload.map((o:SingleCategory) => o.categoryId);
+        const categoryNameMapToId: CategoryNameToIdMap = {};
+        action.payload.forEach((o: SingleCategory) => categoryNameMapToId[o.categoryName] = o.categoryId);
         state.categoryNameMapToId = categoryNameMapToId;
       })
-      .addCase(fetchCategories.rejected, (state: Categories, action) => {
-        state.status = 'error loading';
-        state.error = action.error;
-      })
-      .addCase(updateCategoryName.fulfilled, (state: Categories, action) => {
+      .addCase(updateCategoryName.fulfilled, (state: CategoriesState, action) => {
         const { payload: { status, categoryId, categoryName } } = action;
         if (status === 'ok') {
           state.data[categoryId] = {
