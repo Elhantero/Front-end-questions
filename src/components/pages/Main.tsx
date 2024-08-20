@@ -8,18 +8,33 @@ import CategoryBlock from '../common/CategoryBlock';
 import CategoryLink from '../common/CategoryLink';
 import { fetchCategories, setCurrentCategoryId } from '../../slices/categorySlices';
 import { selectCategories, selectCategoriesOrder, selectCategoryNameMapToId } from '../../selectors/categoriesSelectors';
+import MainStore from '../../helpers/tsTypes/reduxState/mainStore';
+import {CategoryIdToDataMap, CategoryNameToIdMap} from "../../helpers/tsTypes/reduxState/categories/categories";
+import {AppDispatch} from "../../store";
 
-const Main = ({ categories, categoriesOrder, categoryNameMapToId }) => {
-  const { categoryName: currentCategoryName } = useParams();
-  const dispatch = useDispatch();
+const Main = (
+    {
+        categories,
+        categoriesOrder,
+        categoryNameMapToId,
+    } : {
+        categories: CategoryIdToDataMap,
+        categoriesOrder: number[],
+        categoryNameMapToId: CategoryNameToIdMap,
+    }
+) => {
+  type UrlParams = { categoryName: string };
+  const { categoryName } = useParams<UrlParams>();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(setCurrentCategoryId(categoryNameMapToId?.[currentCategoryName]));
-  }, [categoryNameMapToId, currentCategoryName, dispatch]);
+      if (categoryName) dispatch(setCurrentCategoryId(categoryNameMapToId?.[categoryName]));
+  }, [categoryName]);
+
 
   useEffect(() => {
     dispatch(fetchCategories());
-  }, [dispatch]);
+  }, []);
 
   return (
     <BodyWrapper>
@@ -30,19 +45,19 @@ const Main = ({ categories, categoriesOrder, categoryNameMapToId }) => {
             key={id}
             categoryName={categories[id].categoryName}
             categoryNameTranslaate={categories[id].name}
-            currentCategoryName={currentCategoryName}
+            currentCategoryName={categoryName}
           />
         ))}
       </Nav>
       <Article id="mainArticle">
-        {currentCategoryName ? <CategoryBlock currentCategoryName={currentCategoryName} /> : null}
+        {categoryName ? <CategoryBlock /> : null}
       </Article>
       <Footer id="pageFooter">підготовка до співбесід, 2024 р.</Footer>
     </BodyWrapper>
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: MainStore) => ({
   categories: selectCategories(state),
   categoriesOrder: selectCategoriesOrder(state),
   categoryNameMapToId: selectCategoryNameMapToId(state),
