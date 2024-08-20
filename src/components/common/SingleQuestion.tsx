@@ -65,8 +65,26 @@ const Label = styled.label`
     cursor: pointer;
     user-select: none;
     border-radius: 50%;
-    color: #73beff;
-    border: 1px solid #73beff;
+    color: ${({ readyStatus }) => readyStatus ? '#fff': '#73beff'};
+    border: 1px solid ${({ readyStatus }) => readyStatus ? '#fff': '#73beff'};
+    .arrow {
+      border: solid ${({ readyStatus }) => readyStatus ? '#fff': '#73beff'};
+      border-width: 0 3px 3px 0;
+      display: inline-block;
+      padding: 3px;
+    }
+    .right {
+      transform: rotate(-45deg);
+    }
+    .left {
+      transform: rotate(135deg);
+    }
+    .up {
+      transform: rotate(-135deg);
+    }
+   .down {
+      transform: rotate(45deg);
+    }
 `;
 
 const TopLine = styled.div`
@@ -168,43 +186,42 @@ const SingleQuestion = ({ questionId, question }) => {
 
         <div>
           <input hidden type="checkbox" name={questionId} id={questionId} onChange={handleShowHideSettings} />
-          <Label htmlFor={questionId}>
-            {showSettings ? '-' : '+'}
+          <Label htmlFor={questionId} readyStatus={readyStatus}>
+            <i className={`arrow ${showSettings ? 'up' : 'down' }`} />
           </Label>
         </div>
       </TopLine>
 
       {
-                showSettings ? (
-                  <BotLine>
-                    <Rating rating={rating} handleRating={handleRating} questionId={questionId} />
+        showSettings ? (
+          <BotLine>
+            <Rating rating={rating} handleRating={handleRating} questionId={questionId} />
 
-                    <BtnWrapper>
-                      <input
-                        type="checkbox"
-                        onChange={handleReadyStatus}
-                        checked={readyStatus}
-                        title="Зміна статусу готовності, готові питання виводяться в кінці"
-                      />
-                      {
-                                isEditNow
-                                  ? (
-                                    <Btn
-                                      btnType="save"
-                                      onClick={onClickSave}
-                                      disabled={!questionText || questionText === text}
-                                    >
-                                      Save
-                                    </Btn>
-                                  )
-                                  : <Btn btnType="edit" onClick={onClickEdit}>Edit</Btn>
-                            }
-                      <Btn btnType="del" onClick={onClickDelete}>Del</Btn>
-                    </BtnWrapper>
-                  </BotLine>
-                ) : null
-            }
-
+            <BtnWrapper>
+              <input
+                type="checkbox"
+                onChange={handleReadyStatus}
+                checked={readyStatus}
+                title="Зміна статусу готовності, готові питання виводяться в кінці"
+              />
+              {
+                isEditNow
+                  ? (
+                    <Btn
+                      btnType="save"
+                      onClick={onClickSave}
+                      disabled={!questionText || questionText === text}
+                    >
+                      Save
+                    </Btn>
+                  )
+                  : <Btn btnType="edit" onClick={onClickEdit}>Edit</Btn>
+              }
+              <Btn btnType="del" onClick={onClickDelete}>Del</Btn>
+            </BtnWrapper>
+          </BotLine>
+        ) : null
+    }
     </Wrapper>
   );
 };

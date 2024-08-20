@@ -40,9 +40,9 @@ const questionsSlice = createSlice({
   name: 'questions',
   initialState: {
     data: {},
+    order: [],
     status: null,
     error: null,
-    order: [],
   },
   reducers: {
     deleteQuestion: (state, action) => {
@@ -70,6 +70,7 @@ const questionsSlice = createSlice({
         questionId, ...otherParams
       } = action.payload;
       if (!questionId) return;
+      console.log(action.payload, 'questionsSlices.ts', 73);
       Object.keys(otherParams).forEach((key) => {
         if (otherParams[key] !== undefined) state.data[questionId][key] = otherParams[key];
       });
