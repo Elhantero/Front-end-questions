@@ -1,8 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import keyBy from 'lodash/keyBy';
 import remove from 'lodash/remove';
-import {SingleQuestion, QuestionState, Data} from "../helpers/tsTypes/reduxState/questions";
-import {QueryStatus} from "@reduxjs/toolkit/query";
+import {SingleQuestion, QuestionState} from "../helpers/tsTypes/reduxState/questions";
 
 export const fetchQuestionsByCategoryId = createAsyncThunk(
   'questions/fetchByCategoryId',
@@ -68,7 +67,6 @@ const questionsSlice = createSlice({
     updateQuestion: (state: QuestionState, action) => {
       const { ...question } : SingleQuestion = action.payload;
       if (!question.questionId) return;
-      console.log(action.payload, 'questionsSlices.ts', 73);
       (Object.keys(question)).forEach((key: string) => {
         if (question[key as keyof {}] !== undefined) {
           state.data[question.questionId][key as keyof {}] = question[key as keyof {}];

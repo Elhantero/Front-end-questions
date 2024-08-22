@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, { Fragment, memo } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -47,14 +47,14 @@ const Wrapper = styled.div`
     }
 `;
 
-const Rating = (
+const Rating = memo((
     { rating, handleRating, questionId } : {
         rating: number,
         handleRating: (e: React.ChangeEvent<HTMLInputElement>) => {},
         questionId: number
     }
 ) => {
-
+   console.log('render', 'Rating.tsx', 57);
   const order:number[] = [];
   for(let i = 10; i > 0; i--) order.push(i);
   return (
@@ -79,6 +79,6 @@ const Rating = (
       </div>
     </Wrapper>
   );
-};
+});
 
 export default Rating;

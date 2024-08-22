@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { selectQuestionById } from '../../selectors/questionsSelectors';
@@ -6,6 +6,7 @@ import { deleteQuestion, updateQuestion } from '../../slices/questionsSlices';
 import Rating from './Rating';
 import * as questionsTypes from "../../helpers/tsTypes/reduxState/questions";
 import { RootState} from "../../store";
+import useInput from "../hooks/useInput";
 
 interface WrapperProps {
   $readyStatus?: boolean,
@@ -156,33 +157,25 @@ const BtnWrapper = styled.div`
 
 const SingleQuestion = ({ questionId, question } : { questionId: number, question: questionsTypes.SingleQuestion }) => {
   const { text, readyStatus, rating = 0 } = question;
-  const [questionText, setQuestionText] = useState('');
   const [isEditNow, setIsEditNow] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-
+  const [inputValue, handleInputValue] = useInput(text);
   const dispatch = useDispatch();
   const saveQuestion = (params = {}) => dispatch(updateQuestion(params));
 
-  useEffect(() => {
-    setQuestionText(text);
-  }, [text]);
+  const handleRating = useCallback(
+  (e: React.ChangeEvent<HTMLInputElement>) => saveQuestion({ questionId, rating: e.target.value }),
+    [rating]
+  )
 
-  useEffect(() => {
-    setQuestionText(text);
-  }, [text]);
-
-  const handleRating = (e: React.ChangeEvent<HTMLInputElement>) => saveQuestion({ questionId, rating: e.target.value });
   const handleReadyStatus = (e: React.ChangeEvent<HTMLInputElement>) => saveQuestion({ questionId, readyStatus: e.target.checked });
-  const handleQuestionTextArea = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuestionText(e.target.value);
-  };
 
   const onClickEdit = () => setIsEditNow(true);
 
   const onClickSave = () => {
     setIsEditNow(false);
-    if (questionText && questionText !== text) {
-      saveQuestion({ questionId, text: questionText });
+    if (inputValue && inputValue !== text) {
+      saveQuestion({ questionId, text: inputValue });
     }
   };
 
@@ -195,18 +188,14 @@ const SingleQuestion = ({ questionId, question } : { questionId: number, questio
   };
 
   return (
-    <Wrapper
-      $readyStatus={!!readyStatus}
-      $isEditNow={isEditNow}
-    >
-
+    <Wrapper $readyStatus={!!readyStatus} $isEditNow={isEditNow}>
       <TopLine>
         <div>
           <input
             disabled={!isEditNow}
             type="text"
-            value={questionText}
-            onChange={handleQuestionTextArea}
+            value={inputValue}
+            onChange={handleInputValue}
           />
         </div>
 
@@ -246,7 +235,7 @@ const SingleQuestion = ({ questionId, question } : { questionId: number, questio
                     <Btn
                       $btnType="save"
                       onClick={onClickSave}
-                      disabled={!questionText || questionText === text}
+                      disabled={!inputValue || inputValue === text}
                     >
                       Save
                     </Btn>
