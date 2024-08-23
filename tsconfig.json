@@ -17,7 +17,8 @@
     "resolveJsonModule": true,
     // "allowJs": true /* Allow javascript files to be compiled. Useful when migrating JS to TS */,
     // "checkJs": true /* Report errors in .js files. Works in tandem with allowJs. */,
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "noImplicitAny": true
   },
   "include": ["src/**/*"]
 }

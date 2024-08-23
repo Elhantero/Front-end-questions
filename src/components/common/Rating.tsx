@@ -54,7 +54,6 @@ const Rating = memo((
         questionId: number
     }
 ) => {
-   console.log('render', 'Rating.tsx', 57);
   const order:number[] = [];
   for(let i = 10; i > 0; i--) order.push(i);
   return (
