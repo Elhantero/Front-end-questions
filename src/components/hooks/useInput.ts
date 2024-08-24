@@ -1,10 +1,11 @@
+/* eslint-disable */
 import {useState, ChangeEvent, useEffect, useRef} from "react";
 
 export default (initValue: string = '') : [string, (e: ChangeEvent<HTMLInputElement>) => void]  => {
     const [value, setValue] = useState(initValue);
     const renderCount = useRef(0);
 
-    // debounce test realization
+    // debounce practice realization
     function debounce (f: (o: string) => void, ms: number) {
         let timer: ReturnType<typeof setTimeout>;
         return function() {

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        .root {
+            background: aliceblue;
+        }
+        .list-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 75px;
+            background: beige;
+            &:not(:first-child) {
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root" class="root"></div>
+</body>
+</html>
+
+<script>
+    const { innerHeight } = window;
+    const list = [...Array(100)].map((o, idx) => idx);
+    let rootEl = null;
+    let lastVisibleIdx = 0;
+    const createList = () => {
+        list.every((o, idx) => {
+            const listItem = document.createElement('div');
+            listItem.classList.add('list-item');
+            listItem.innerHTML = `Item ${idx}`;
+            rootEl.appendChild(listItem);
+            const { bottom } = listItem.getBoundingClientRect();
+            if(bottom - innerHeight < 100) {
+                listItem.innerHTML = `in view`;
+                lastVisibleIdx = idx;
+                return true;
+            } else {
+                return false;
+            }
+        })
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        rootEl = document.getElementById('root');
+        createList();
+    });
+
+    document.addEventListener("scroll", (event) => {
+        if(window.scrollY + (innerHeight - (lastVisibleIdx + 1) * 90) > -200 ) {
+            console.log(window.scrollY + (innerHeight - (lastVisibleIdx + 1) * 90) > -200, 'scroll.html', 60);
+            if(list?.[lastVisibleIdx + 1]) {
+                const rootEl = document.getElementById('root');
+                const listItem = document.createElement('div');
+                listItem.classList.add('list-item');
+                listItem.innerHTML = `Item ${list?.[lastVisibleIdx + 1]}`;
+                rootEl.appendChild(listItem);
+                lastVisibleIdx ++;
+            }
+        }
+    });
+</script>
