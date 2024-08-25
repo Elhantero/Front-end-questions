@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import {
   BodyWrapper, Header, Nav, Article, Footer,
@@ -37,7 +37,11 @@ const Main = (
 
   return (
     <BodyWrapper>
-      <Header id="pageHeader">Буде ще якась навігація</Header>
+      <Header id="pageHeader">
+          <Link to="/">Запитання по категоріям</Link>
+          <span>{` / `}</span>
+          <Link to="/exam" >Екзамен</Link>
+      </Header>
       <Nav id="mainNav">
         {categoriesOrder.map((id) => (
           <CategoryLink

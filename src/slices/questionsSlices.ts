@@ -37,6 +37,19 @@ export const createQuestion = createAsyncThunk(
   },
 );
 
+export const fetchQuestionsForExam = createAsyncThunk(
+    'questions/exam',
+    async ( { limit = 10 } : { limit: number | undefined }, { rejectWithValue }) => {
+      try {
+        const response = await fetch(`http://localhost:5000/questions/exam?limit=${limit}`);
+        if (!response.ok) throw new Error('Server Error!');
+        return await response.json();
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
+    },
+);
+
 const questionsSlice = createSlice({
   name: 'questions',
   initialState: {
@@ -108,7 +121,15 @@ const questionsSlice = createSlice({
           };
         }
         state.order.push(questionId);
-      });
+      })
+      .addCase(fetchQuestionsForExam.fulfilled, (state: QuestionState, action) => {
+        state.data = keyBy(action.payload, 'questionId');
+        const order = action.payload.map((o: SingleQuestion) => Number(o.questionId));
+        // сортування щоб готові питання були в кінці
+        order.sort((a: number, b: number) => Number(state.data[a].readyStatus) - Number(state.data[b].readyStatus));
+        state.order = order;
+      })
+    ;
   },
 });
 
