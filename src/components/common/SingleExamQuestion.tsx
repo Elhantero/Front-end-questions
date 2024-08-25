@@ -168,7 +168,7 @@ const SingleQuestion = ({ questionId, question } : { questionId: number, questio
     [rating]
   )
 
-  const handleReadyStatus = (e: React.ChangeEvent<HTMLInputElement>) => saveQuestion({ questionId, readyStatus: e.target.checked });
+  const handleReadyStatus = (e: React.ChangeEvent<HTMLInputElement>) => saveQuestion({ questionId, readyStatus: Number(e.target.checked) });
 
   const onClickEdit = () => setIsEditNow(true);
 

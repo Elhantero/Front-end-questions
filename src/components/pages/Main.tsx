@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
-import {
-  BodyWrapper, Header, Nav, Article, Footer,
-} from '../styled/styledComponents';
+import { Nav, Article } from '../styled/styledComponents';
 import CategoryBlock from '../common/CategoryBlock';
 import CategoryLink from '../common/CategoryLink';
 import { fetchCategories, setCurrentCategoryId } from '../../slices/categorySlices';
 import { selectCategories, selectCategoriesOrder, selectCategoryNameMapToId } from '../../selectors/categoriesSelectors';
 import {CategoryIdToDataMap, CategoryNameToIdMap} from "../../helpers/tsTypes/reduxState/categories";
 import {AppDispatch, RootState} from "../../store";
+import Layout from "../common/layout/Layout";
 
 const Main = (
     {
@@ -36,27 +35,21 @@ const Main = (
   }, []);
 
   return (
-    <BodyWrapper>
-      <Header id="pageHeader">
-          <Link to="/">Запитання по категоріям</Link>
-          <span>{` / `}</span>
-          <Link to="/exam" >Екзамен</Link>
-      </Header>
-      <Nav id="mainNav">
-        {categoriesOrder.map((id) => (
-          <CategoryLink
-            key={id}
-            categoryName={categories[id].categoryName}
-            categoryNameTranslaate={categories[id].name}
-            currentCategoryName={categoryName}
-          />
-        ))}
-      </Nav>
-      <Article id="mainArticle">
-        {categoryName ? <CategoryBlock /> : null}
-      </Article>
-      <Footer id="pageFooter">підготовка до співбесід, 2024 р.</Footer>
-    </BodyWrapper>
+      <Layout>
+          <Nav id="mainNav">
+              {categoriesOrder.map((id) => (
+                  <CategoryLink
+                      key={id}
+                      categoryName={categories[id].categoryName}
+                      categoryNameTranslaate={categories[id].name}
+                      currentCategoryName={categoryName}
+                  />
+              ))}
+          </Nav>
+          <Article id="mainArticle">
+              {categoryName ? <CategoryBlock /> : null}
+          </Article>
+      </Layout>
   );
 };
 
