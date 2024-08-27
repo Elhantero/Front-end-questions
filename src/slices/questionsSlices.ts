@@ -50,11 +50,25 @@ export const fetchQuestionsForExam = createAsyncThunk(
     },
 );
 
+export const fetchQuestionsStatistic = createAsyncThunk(
+    'questions/statistic',
+    async ( _, { rejectWithValue }) => {
+      try {
+        const response = await fetch(`http://localhost:5000/questions/statistic`);
+        if (!response.ok) throw new Error('Server Error!');
+        return await response.json();
+      } catch (error) {
+        return rejectWithValue(error.message);
+      }
+    },
+);
+
 const questionsSlice = createSlice({
   name: 'questions',
   initialState: {
     data: {},
     order: [],
+    statistic: {},
   },
   reducers: {
     deleteQuestion: (state: QuestionState, action) => {
@@ -128,6 +142,9 @@ const questionsSlice = createSlice({
         // сортування щоб готові питання були в кінці
         order.sort((a: number, b: number) => Number(state.data[a].readyStatus) - Number(state.data[b].readyStatus));
         state.order = order;
+      })
+      .addCase(fetchQuestionsStatistic.fulfilled, (state: QuestionState, action) => {
+        state.statistic = action.payload;
       })
     ;
   },

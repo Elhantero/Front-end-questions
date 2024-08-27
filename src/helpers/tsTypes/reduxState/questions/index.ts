@@ -5,11 +5,17 @@ export type SingleQuestion = {
     readyStatus?: number,
     rating?: number,
 };
-export interface Data {
+export type Data = {
     [key: string]: SingleQuestion
+}
+
+export type QuestionsStatistic = {
+    total: number,
+    readyCount: number,
 }
 
 export interface QuestionState {
     data: Data,
     order: number[]
+    statistic: QuestionsStatistic
 }

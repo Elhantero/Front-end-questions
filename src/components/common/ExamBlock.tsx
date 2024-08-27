@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { selectQuestionsOrder } from '../../selectors/questionsSelectors';
