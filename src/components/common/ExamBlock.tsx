@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, memo} from 'react';
 import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { selectQuestionsOrder } from '../../selectors/questionsSelectors';
@@ -21,6 +21,8 @@ const CategoryBlock = (
     dispatch(fetchQuestionsForExam({ limit: 10 }));
   }, []);
 
+  if(!questionsOrder?.length) return null;
+  console.log(SingleExamQuestion, 'ExamBlock.tsx', 25)
   return (
     <Wrapper>
       {questionsOrder.map((id) => (
@@ -37,4 +39,4 @@ const mapStateToProps = (state: RootState) => ({
   questionsOrder: selectQuestionsOrder(state),
 });
 
-export default connect(mapStateToProps)(CategoryBlock);
+export default connect(mapStateToProps)(memo(CategoryBlock));

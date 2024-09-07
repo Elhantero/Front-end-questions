@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <input type="text" id="testId">
+        <button type="button" id="btnId">
+            send input data
+        </button>
+        <div id="resultId">
+
+        </div>
+    </div>
+</body>
+</html>
+
+<script defer>
+    const input = document.getElementById('testId');
+    const btn = document.getElementById('btnId');
+    const resultDiv = document.getElementById('resultId');
+
+    const showInputText = (value) => {
+        console.log(value, 'debounceInput.html', 26)
+        resultDiv.innerHTML = value;
+    }
+
+    function makeDebounce (func) {
+        let timer = null;
+        return function () {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                func.apply(null, arguments);
+            }, 1000)
+        }
+    };
+
+    function makeThrottle (func) {
+        let timer = null;
+        return function () {
+            if(!timer) {
+                timer = setTimeout(() => {
+                    func.apply(null, arguments);
+                    console.log(timer, 'debounceInput.html', 46)
+                    timer = null;
+                }, 1000)
+            }
+        }
+    }
+
+    const debouncedShowInputText = makeDebounce(showInputText);
+    const throttledShowInputText = makeThrottle(showInputText);
+
+
+    input.addEventListener('input', (e) => {
+        debouncedShowInputText(e.target.value);
+        // throttledShowInputText(e.target.value);
+    })
+    
+</script>

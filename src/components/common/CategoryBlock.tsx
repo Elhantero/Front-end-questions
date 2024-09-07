@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { selectCurrentCategoryId } from '../../selectors/categoriesSelectors';
 import { selectQuestionsOrder } from '../../selectors/questionsSelectors';
 import { fetchQuestionsByCategoryId } from '../../slices/questionsSlices';
-import SingleQuestion from './SingleQuestion';
+import SingleQuestionWitnAnswer from './SingleQuestionWitnAnswer';
 import AddQuestion from './AddQuestion';
 import { AppDispatch, RootState} from "../../store";
 
@@ -32,7 +32,7 @@ const CategoryBlock = (
   return (
     <Wrapper>
       {questionsOrder.map((id) => (
-        <SingleQuestion
+        <SingleQuestionWitnAnswer
           key={id}
           questionId={id}
         />

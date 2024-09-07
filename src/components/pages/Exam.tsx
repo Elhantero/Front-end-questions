@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useDispatch, connect} from "react-redux";
 import {Article, Nav} from "../styled/styledComponents";
 import ExamBlock from "../common/ExamBlock";
@@ -22,11 +22,14 @@ const Exam = ({
     averagePercentResult: number,
 }) => {
     const dispatch = useDispatch<AppDispatch>();
+    const [a, setA] = useState(0);
+    console.log(a, 'Exam.tsx', 26)
 
     useEffect(() => {
         dispatch(fetchExamStatistic());
         dispatch(fetchExamsCount());
         dispatch(fetchQuestionsStatistic());
+        setTimeout(() => setA(1), 3000)
     }, []);
 
     const handleClick = () => dispatch(fetchQuestionsForExam({ limit: 10 }));
