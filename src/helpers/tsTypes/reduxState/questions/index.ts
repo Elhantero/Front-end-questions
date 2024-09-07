@@ -4,6 +4,7 @@ export type SingleQuestion = {
     categoryId?: number,
     readyStatus?: number,
     rating?: number,
+    answer?: string,
 };
 export type Data = {
     [key: string]: SingleQuestion

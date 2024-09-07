@@ -3,7 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { selectQuestionsOrder } from '../../selectors/questionsSelectors';
 import {fetchQuestionsForExam} from '../../slices/questionsSlices';
-import SingleExamQuestion from './SingleExamQuestion';
+import SingleQuestion from '../common/singleQuestion/SingleQuestion';
 import { AppDispatch, RootState} from "../../store";
 
 const Wrapper = styled.div`
@@ -22,11 +22,10 @@ const CategoryBlock = (
   }, []);
 
   if(!questionsOrder?.length) return null;
-  console.log(SingleExamQuestion, 'ExamBlock.tsx', 25)
   return (
     <Wrapper>
       {questionsOrder.map((id) => (
-        <SingleExamQuestion
+        <SingleQuestion
           key={id}
           questionId={id}
         />

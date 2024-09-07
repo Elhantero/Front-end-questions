@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { selectCurrentCategoryId } from '../../selectors/categoriesSelectors';
 import { selectQuestionsOrder } from '../../selectors/questionsSelectors';
 import { fetchQuestionsByCategoryId } from '../../slices/questionsSlices';
-import SingleQuestionWitnAnswer from './SingleQuestionWitnAnswer';
+import SingleQuestionWitnAnswer from './singleQuestion/SingleQuestion';
 import AddQuestion from './AddQuestion';
 import { AppDispatch, RootState} from "../../store";
 
