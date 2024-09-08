@@ -61,11 +61,22 @@ const Label = styled.label<LabelProps>`
     }
 `;
 
-const TopLine = styled.div`
+interface TopLineProps {
+  withAnswer?: boolean,
+}
+
+const TopLine = styled.div<TopLineProps>`
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+    
+    >div:first-child {
+        input[type="text"] {
+          background-color: ${((props) => (props.withAnswer ? '#a0ffb7' : ''))};
+        }
+    }
+    
 
     > div:last-child {
         display: flex;
@@ -75,13 +86,13 @@ const TopLine = styled.div`
 `;
 
 const SingleQuestion = ({ questionId, question } : { questionId: number, question: questionsTypes.SingleQuestion }) => {
-  const { readyStatus} = question;
+  const { readyStatus, answer} = question;
   const [showSettings, setShowSettings] = useState(false);
   const handleShowHideSettings = (e: React.ChangeEvent<HTMLInputElement>) => setShowSettings(e.target.checked);
 
   return (
     <Wrapper $readyStatus={!!readyStatus}>
-      <TopLine>
+      <TopLine withAnswer={!!answer}>
         <QuestionText questionId={questionId} />
 
         <div>

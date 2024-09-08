@@ -28,11 +28,12 @@ const QuestionAnswer = ({ questionId, question } : { questionId: number, questio
     const onClickEditAnswer = () => setIsEditAnswer(true);
     const onChangeAnswerValue = (html: any) => setAnswerValue(html);
 
+    const delTagsAndTrim = (str) => str.replace(/(<([^>]+)>)/ig, '').trim();
     const onClickSaveAnswer = () => {
         setIsEditAnswer(false);
-        if (answerValue && answerValue !== answer) {
-            saveQuestion({ questionId, answer: answerValue });
-        }
+        // щоб не записувались в бд пусті теги
+        const res = delTagsAndTrim(answerValue) ? answerValue : '';
+        saveQuestion({ questionId, answer: res });
     };
     const sanitizedData = (data: string) => ({
         __html: DOMPurify.sanitize(data)
