@@ -6,7 +6,8 @@ export default () => (
     <Header id="pageHeader">
         <Link to="/">Запитання по категоріям</Link>
         <span>{` / `}</span>
-        <Link to="/exam" >Екзамен</Link>
+        <Link to="/exam">Екзамен</Link>
+        <span>{` / `}</span>
     </Header>
 );
 

@@ -39,16 +39,16 @@ const Exam = ({
         <Layout>
             <Nav id="mainNav">
                 <button onClick={handleClick}>Почати новий екзамен</button>
-                {readyQuestionsCount} / {totalQuestionsCount}
-                <div>
-                    lastResults - {lastResults.map(o => (<span>{o}</span>))}
-                </div>
-                <div>
-                    totalCount - {totalCount}
-                </div>
-                <div>
-                    averagePercentResult - {averagePercentResult}
-                </div>
+                {/*{readyQuestionsCount} / {totalQuestionsCount}*/}
+                {/*<div>*/}
+                {/*    lastResults - {lastResults.map(o => (<span>{o}</span>))}*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    totalCount - {totalCount}*/}
+                {/*</div>*/}
+                {/*<div>*/}
+                {/*    averagePercentResult - {averagePercentResult}*/}
+                {/*</div>*/}
             </Nav>
             <Article id="mainArticle">
                 <ExamBlock />

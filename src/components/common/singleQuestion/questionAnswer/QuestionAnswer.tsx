@@ -16,6 +16,10 @@ const BotLine = styled.div`
     img {
       max-width: 100%;
     }
+    pre {
+        padding: 10px;
+        background: khaki;
+    }
 `;
 const QuestionAnswer = ({ questionId, question } : { questionId: number, question: questionsTypes.SingleQuestion }) => {
     const { answer} = question;
