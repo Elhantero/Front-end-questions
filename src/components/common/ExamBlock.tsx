@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { selectQuestionsOrder } from '../../selectors/questionsSelectors';
 import {fetchQuestionsForExam} from '../../slices/questionsSlices';
 import SingleQuestion from '../common/singleQuestion/SingleQuestion';
-import { AppDispatch, RootState} from "../../store";
+import { AppDispatch, RootStateType} from "../../store";
 
 const Wrapper = styled.div`
     display: flex;
@@ -34,7 +34,7 @@ const CategoryBlock = (
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootStateType) => ({
   questionsOrder: selectQuestionsOrder(state),
 });
 

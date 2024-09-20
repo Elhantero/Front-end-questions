@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import React, {useEffect} from 'react';
+import {connect, useDispatch} from 'react-redux';
 import styled from 'styled-components';
-import { selectCurrentCategoryId } from '../../selectors/categoriesSelectors';
-import { selectQuestionsOrder } from '../../selectors/questionsSelectors';
-import { fetchQuestionsByCategoryId } from '../../slices/questionsSlices';
+import {selectCurrentCategoryId} from '../../selectors/categoriesSelectors';
+import {selectQuestionsOrder} from '../../selectors/questionsSelectors';
+import {fetchQuestionsByCategoryId} from '../../slices/questionsSlices';
 import SingleQuestionWitnAnswer from './singleQuestion/SingleQuestion';
 import AddQuestion from './AddQuestion';
-import { AppDispatch, RootState} from "../../store";
+import {AppDispatch, RootStateType} from "../../store";
 
 const Wrapper = styled.div`
     display: flex;
@@ -15,19 +15,27 @@ const Wrapper = styled.div`
 `;
 
 const CategoryBlock = (
-    {
-      currentCategoryId = 0,
-      questionsOrder = [],
-    } : {
-      currentCategoryId: number,
-      questionsOrder: number[],
-    }
+  {
+    currentCategoryId = 0,
+    questionsOrder = [],
+  }: {
+    currentCategoryId: number,
+    questionsOrder: number[],
+  }
 ) => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(fetchQuestionsByCategoryId({ categoryId: currentCategoryId }));
+    dispatch(fetchQuestionsByCategoryId({categoryId: currentCategoryId}));
   }, [currentCategoryId]);
+
+  if (!currentCategoryId) {
+    return (
+      <div>
+        Please, select category
+      </div>
+    )
+  }
 
   return (
     <Wrapper>
@@ -37,12 +45,12 @@ const CategoryBlock = (
           questionId={id}
         />
       ))}
-      <AddQuestion />
+      <AddQuestion/>
     </Wrapper>
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootStateType) => ({
   currentCategoryId: selectCurrentCategoryId(state),
   questionsOrder: selectQuestionsOrder(state),
 });

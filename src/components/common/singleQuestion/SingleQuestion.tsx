@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { selectQuestionById } from '../../../selectors/questionsSelectors';
 import * as questionsTypes from "../../../types/questions";
-import { RootState} from "../../../store";
+import { RootStateType} from "../../../store";
 import QuestionText from "./questionText/QuestionText";
 import QuestionAnswer from "./questionAnswer/QuestionAnswer";
 
@@ -62,7 +62,7 @@ const Label = styled.label<LabelProps>`
 `;
 
 interface TopLineProps {
-  withAnswer?: boolean,
+  $withAnswer?: boolean,
 }
 
 const TopLine = styled.div<TopLineProps>`
@@ -73,7 +73,7 @@ const TopLine = styled.div<TopLineProps>`
     
     >div:first-child {
         input[type="text"] {
-          background-color: ${((props) => (props.withAnswer ? '#a0ffb7' : ''))};
+          background-color: ${((props) => (props.$withAnswer ? '#a0ffb7' : ''))};
         }
     }
     
@@ -92,7 +92,7 @@ const SingleQuestion = ({ questionId, question } : { questionId: number, questio
 
   return (
     <Wrapper $readyStatus={!!readyStatus}>
-      <TopLine withAnswer={!!answer}>
+      <TopLine $withAnswer={!!answer}>
         <QuestionText questionId={questionId} />
 
         <div>
@@ -114,7 +114,7 @@ const SingleQuestion = ({ questionId, question } : { questionId: number, questio
   );
 };
 
-const mapStateToProps = (state: RootState, {questionId}: { questionId: number }) => ({
+const mapStateToProps = (state: RootStateType, {questionId}: { questionId: number }) => ({
   question: selectQuestionById(state, questionId),
 });
 

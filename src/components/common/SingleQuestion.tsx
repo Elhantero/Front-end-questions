@@ -5,7 +5,7 @@ import { selectQuestionById } from '../../selectors/questionsSelectors';
 import { deleteQuestion, updateQuestion } from '../../slices/questionsSlices';
 import Rating from './Rating';
 import * as questionsTypes from "../../types/questions";
-import { RootState} from "../../store";
+import { RootStateType} from "../../store";
 import useInput from "../../hooks/useInput";
 
 interface WrapperProps {
@@ -251,7 +251,7 @@ const SingleQuestion = ({ questionId, question } : { questionId: number, questio
   );
 };
 
-const mapStateToProps = (state: RootState, { questionId } : { questionId: number }) => ({
+const mapStateToProps = (state: RootStateType, { questionId } : { questionId: number }) => ({
   question: selectQuestionById(state, questionId),
 });
 

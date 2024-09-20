@@ -3,7 +3,7 @@ import {useDispatch, connect} from "react-redux";
 import {Article, Nav} from "../../components/styled/styledComponents";
 import ExamBlock from "../../components/common/ExamBlock";
 import Layout from "../../components/common/layout/Layout";
-import {AppDispatch, RootState} from "../../store";
+import {AppDispatch, RootStateType} from "../../store";
 import {fetchQuestionsForExam, fetchQuestionsStatistic} from "../../slices/questionsSlices";
 import {selectTotalQuestionsCount, selectReadyQuestionsCount} from "../../selectors/questionsSelectors";
 import {createExamResult, fetchExamsCount, fetchExamStatistic} from "../../slices/examSlices";
@@ -63,7 +63,7 @@ const Exam = ({
     );
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootStateType) => ({
     totalQuestionsCount: selectTotalQuestionsCount(state),
     readyQuestionsCount: selectReadyQuestionsCount(state),
     totalCount: selectTotalCount(state),

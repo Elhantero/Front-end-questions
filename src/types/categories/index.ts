@@ -4,19 +4,15 @@ export type SingleCategory = {
     name: string,
 };
 
-export interface CategoryIdToDataMap {
+export type CategoryIdToDataMap = {
     [key: string]: SingleCategory
 }
-export interface CategoryNameToIdMap {
+export type CategoryNameToIdMap = {
     [key: string]: number
 }
 
-export interface Data {
-    [key: string]: CategoryIdToDataMap
-}
-
 export interface CategoriesState {
-    data: Data,
+    data: CategoryIdToDataMap,
     order: number[],
     categoryNameMapToId: CategoryNameToIdMap,
     currentCategoryId: number,

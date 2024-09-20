@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {connect, useDispatch} from "react-redux";
 import useInput from "../../../../hooks/useInput";
-import {AppDispatch, RootState} from "../../../../store";
+import {AppDispatch, RootStateType} from "../../../../store";
 import {selectQuestionById} from "../../../../selectors/questionsSelectors";
 import * as questionsTypes from "../../../../types/questions";
 import {Wrapper, BtnWrapper, Label, Btn} from "./styledComponents";
@@ -85,7 +85,7 @@ const QuestionText = ({questionId, question}: { questionId: number, question: qu
     );
 };
 
-const mapStateToProps = (state: RootState, {questionId}: { questionId: number }) => ({
+const mapStateToProps = (state: RootStateType, {questionId}: { questionId: number }) => ({
     question: selectQuestionById(state, questionId),
 });
 

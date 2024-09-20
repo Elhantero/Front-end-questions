@@ -3,7 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { createQuestion } from '../../slices/questionsSlices';
 import { selectCurrentCategoryId } from '../../selectors/categoriesSelectors';
-import {RootState, AppDispatch} from "../../store";
+import {RootStateType, AppDispatch} from "../../store";
 
 const Wrapper = styled.div`
     display: flex;
@@ -72,7 +72,7 @@ const AddQuestion = ({ currentCategoryId } : { currentCategoryId: number }) => {
   );
 };
 
-const mapStateToProps = (state: RootState) => ({
+const mapStateToProps = (state: RootStateType) => ({
   currentCategoryId: selectCurrentCategoryId(state),
 });
 

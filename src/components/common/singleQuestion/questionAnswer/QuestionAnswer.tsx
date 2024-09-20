@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import DOMPurify from 'dompurify';
 import EditorConvertToHTML from "../../Editor";
 import styled from "styled-components";
-import {RootState} from "../../../../store";
+import {RootStateType} from "../../../../store";
 import {selectQuestionById} from "../../../../selectors/questionsSelectors";
 import {connect, useDispatch} from "react-redux";
 import * as questionsTypes from "../../../../types/questions";
@@ -68,7 +68,7 @@ const QuestionAnswer = ({ questionId, question } : { questionId: number, questio
         </BotLine>
     );
 };
-const mapStateToProps = (state: RootState, {questionId}: { questionId: number }) => ({
+const mapStateToProps = (state: RootStateType, {questionId}: { questionId: number }) => ({
     question: selectQuestionById(state, questionId),
 });
 
