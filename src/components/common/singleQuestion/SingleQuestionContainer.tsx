@@ -127,7 +127,9 @@ const SingleQuestionContainer = ({questionId, question}: { questionId: number, q
       </TopLine>
 
       {showSettings ? (<QuestionAnswer questionId={questionId}/>) : null}
-      <Rating rating={rating} handleRating={handleRating} questionId={questionId} />
+      {showSettings ? (
+        <Rating rating={rating} handleRating={handleRating} questionId={questionId} />
+      ) : null}
     </Wrapper>
   );
 };
