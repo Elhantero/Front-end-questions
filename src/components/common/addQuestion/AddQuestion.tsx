@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { createQuestion } from '../../slices/questionsSlices';
-import { selectCurrentCategoryId } from '../../selectors/categoriesSelectors';
-import {RootStateType, AppDispatch} from "../../store";
+import { createQuestion } from '../../../slices/questionsSlices';
+import { selectCurrentCategoryId } from '../../../selectors/categoriesSelectors';
+import {RootStateType, AppDispatch} from "../../../store";
 
 const Wrapper = styled.div`
     display: flex;

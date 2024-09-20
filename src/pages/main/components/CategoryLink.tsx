@@ -18,10 +18,7 @@ const CategoryLink = (
   if (!categoryId || !category) return null;
   const { categoryName, name} = category;
   return (
-    <LinkWrapper
-      to={`/categories/${categoryName}`}
-      $isActive={categoryId === currentCategoryId}
-    >
+    <LinkWrapper to={`/categories/${categoryName}`} $isActive={categoryId === currentCategoryId}>
       {name}
     </LinkWrapper>
   );

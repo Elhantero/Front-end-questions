@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import DOMPurify from 'dompurify';
-import EditorConvertToHTML from "../../Editor";
+import EditorConvertToHTML from "../../editor/Editor";
 import styled from "styled-components";
 import {RootStateType} from "../../../../store";
 import {selectQuestionById} from "../../../../selectors/questionsSelectors";

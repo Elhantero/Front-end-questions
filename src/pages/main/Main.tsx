@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {Nav, Article} from '../../components/styled/styledComponents';
-import CategoryBlock from '../../components/common/CategoryBlock';
+import QuestionsBlock from './components/QuestionsBlock';
 import {fetchCategories} from '../../slices/categorySlices';
 import {AppDispatch} from "../../store";
 import Layout from "../../components/common/layout/Layout";
@@ -20,7 +20,7 @@ const Main = () => {
         <CategoriesLinkContainer/>
       </Nav>
       <Article id="mainArticle">
-        <CategoryBlock/>
+        <QuestionsBlock/>
       </Article>
     </Layout>
   );

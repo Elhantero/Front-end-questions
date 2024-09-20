@@ -1,74 +1,29 @@
-import React, {useEffect, useState} from 'react';
-import {useDispatch, connect} from "react-redux";
+import React, {useEffect} from 'react';
+import {useDispatch} from "react-redux";
 import {Article, Nav} from "../../components/styled/styledComponents";
-import ExamBlock from "../../components/common/ExamBlock";
+import QuestionsBlock from "./components/QuestionsBlock";
 import Layout from "../../components/common/layout/Layout";
-import {AppDispatch, RootStateType} from "../../store";
-import {fetchQuestionsForExam, fetchQuestionsStatistic} from "../../slices/questionsSlices";
-import {selectTotalQuestionsCount, selectReadyQuestionsCount} from "../../selectors/questionsSelectors";
-import {createExamResult, fetchExamsCount, fetchExamStatistic} from "../../slices/examSlices";
-import { selectTotalCount, selectLastResults, selectAveragePercentResult } from "../../selectors/examSelectors";
-const Exam = ({
-      totalQuestionsCount,
-      readyQuestionsCount,
-      totalCount,
-      lastResults,
-      averagePercentResult,
-} : {
-    totalQuestionsCount: number,
-    readyQuestionsCount: number,
-    totalCount: number,
-    lastResults: number[],
-    averagePercentResult: number,
-}) => {
+import {AppDispatch} from "../../store";
+import {fetchQuestionsForExam} from "../../slices/questionsSlices";
+
+const Exam = () => {
     const dispatch = useDispatch<AppDispatch>();
+    const loadNewQuestions = () => dispatch(fetchQuestionsForExam({ limit: 10 }));
 
     useEffect(() => {
-        dispatch(fetchExamStatistic());
-        dispatch(fetchExamsCount());
-        dispatch(fetchQuestionsStatistic());
+      loadNewQuestions();
     }, []);
-
-    const handleClick = () => dispatch(fetchQuestionsForExam({ limit: 10 }));
-    const handleSendResult = () => {
-        const percentResult = readyQuestionsCount * 100 / totalQuestionsCount;
-        dispatch(createExamResult(percentResult));
-    }
 
     return (
         <Layout>
             <Nav id="mainNav">
-                <button onClick={handleClick}>Почати новий екзамен</button>
-                {/*{readyQuestionsCount} / {totalQuestionsCount}*/}
-                {/*<div>*/}
-                {/*    lastResults - {lastResults.map(o => (<span>{o}</span>))}*/}
-                {/*</div>*/}
-                {/*<div>*/}
-                {/*    totalCount - {totalCount}*/}
-                {/*</div>*/}
-                {/*<div>*/}
-                {/*    averagePercentResult - {averagePercentResult}*/}
-                {/*</div>*/}
+                <button onClick={loadNewQuestions}>Почати новий екзамен</button>
             </Nav>
             <Article id="mainArticle">
-                <ExamBlock />
-
-                <div>
-                    <button onClick={handleSendResult}>
-                        відправити результат
-                    </button>
-                </div>
+                <QuestionsBlock />
             </Article>
         </Layout>
     );
 };
 
-const mapStateToProps = (state: RootStateType) => ({
-    totalQuestionsCount: selectTotalQuestionsCount(state),
-    readyQuestionsCount: selectReadyQuestionsCount(state),
-    totalCount: selectTotalCount(state),
-    lastResults: selectLastResults(state),
-    averagePercentResult: selectAveragePercentResult(state),
-})
-
-export default connect(mapStateToProps)(Exam);
+export default Exam;
