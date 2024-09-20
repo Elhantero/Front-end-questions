@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import React, {useState, useCallback} from 'react';
+import {connect, useDispatch} from 'react-redux';
 import styled from 'styled-components';
-import { selectQuestionById } from '../../../selectors/questionsSelectors';
+import {selectQuestionById} from '../../../selectors/questionsSelectors';
 import * as questionsTypes from "../../../types/questions";
-import { RootStateType} from "../../../store";
+import {AppDispatch, RootStateType} from "../../../store";
 import QuestionText from "./questionText/QuestionText";
 import QuestionAnswer from "./questionAnswer/QuestionAnswer";
+import {updateQuestion} from "../../../slices/questionsSlices";
+import Rating from "../rating/Rating";
 
 interface WrapperProps {
   $readyStatus?: boolean,
@@ -39,25 +41,30 @@ const Label = styled.label<LabelProps>`
     cursor: pointer;
     user-select: none;
     border-radius: 50%;
-    color: ${({ $readyStatus }) => $readyStatus ? '#fff': '#73beff'};
-    border: 1px solid ${({ $readyStatus }) => $readyStatus ? '#fff': '#73beff'};
+    color: ${({$readyStatus}) => $readyStatus ? '#fff' : '#73beff'};
+    border: 1px solid ${({$readyStatus}) => $readyStatus ? '#fff' : '#73beff'};
+
     .arrow {
-      border: solid ${({ $readyStatus }) => $readyStatus ? '#fff': '#73beff'};
-      border-width: 0 3px 3px 0;
-      display: inline-block;
-      padding: 3px;
+        border: solid ${({$readyStatus}) => $readyStatus ? '#fff' : '#73beff'};
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
     }
+
     .right {
-      transform: rotate(-45deg);
+        transform: rotate(-45deg);
     }
+
     .left {
-      transform: rotate(135deg);
+        transform: rotate(135deg);
     }
+
     .up {
-      transform: rotate(-135deg);
+        transform: rotate(-135deg);
     }
-   .down {
-      transform: rotate(45deg);
+
+    .down {
+        transform: rotate(45deg);
     }
 `;
 
@@ -70,13 +77,13 @@ const TopLine = styled.div<TopLineProps>`
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    
-    >div:first-child {
+
+    > div:first-child {
         input[type="text"] {
-          background-color: ${((props) => (props.$withAnswer ? '#a0ffb7' : ''))};
+            background-color: ${((props) => (props.$withAnswer ? '#a0ffb7' : ''))};
         }
     }
-    
+
 
     > div:last-child {
         display: flex;
@@ -85,23 +92,33 @@ const TopLine = styled.div<TopLineProps>`
     }
 `;
 
-const SingleQuestion = ({ questionId, question } : { questionId: number, question: questionsTypes.SingleQuestion }) => {
-  const { readyStatus, answer} = question;
+const SingleQuestionContainer = ({questionId, question}: { questionId: number, question: questionsTypes.SingleQuestion }) => {
+  const {readyStatus, answer, rating} = question;
   const [showSettings, setShowSettings] = useState(false);
   const handleShowHideSettings = (e: React.ChangeEvent<HTMLInputElement>) => setShowSettings(e.target.checked);
 
+  const dispatch = useDispatch<AppDispatch>();
+  const saveQuestion = (params = {}) => dispatch(updateQuestion(params));
+
+
+  const handleRating = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => saveQuestion({questionId, rating: e.target.value}),
+    [rating]
+  )
+
   return (
     <Wrapper $readyStatus={!!readyStatus}>
+
       <TopLine $withAnswer={!!answer}>
-        <QuestionText questionId={questionId} />
+        <QuestionText questionId={questionId}/>
 
         <div>
           <input
-              hidden
-              type="checkbox"
-              name={questionId.toString()}
-              id={questionId.toString()}
-              onChange={handleShowHideSettings}
+            hidden
+            type="checkbox"
+            name={questionId.toString()}
+            id={questionId.toString()}
+            onChange={handleShowHideSettings}
           />
           <Label htmlFor={questionId.toString()} $readyStatus={!!readyStatus}>
             <i className={`arrow ${showSettings ? 'up' : 'down'}`}/>
@@ -109,7 +126,8 @@ const SingleQuestion = ({ questionId, question } : { questionId: number, questio
         </div>
       </TopLine>
 
-      {showSettings ? (<QuestionAnswer questionId={questionId} /> ) : null}
+      {showSettings ? (<QuestionAnswer questionId={questionId}/>) : null}
+      <Rating rating={rating} handleRating={handleRating} questionId={questionId} />
     </Wrapper>
   );
 };
@@ -118,4 +136,4 @@ const mapStateToProps = (state: RootStateType, {questionId}: { questionId: numbe
   question: selectQuestionById(state, questionId),
 });
 
-export default connect(mapStateToProps)(SingleQuestion);
+export default connect(mapStateToProps)(SingleQuestionContainer);

@@ -30,7 +30,7 @@ const QuestionAnswer = ({ questionId, question } : { questionId: number, questio
     const dispatch = useDispatch();
     const saveQuestion = (params = {}) => dispatch(updateQuestion(params));
     const onClickEditAnswer = () => setIsEditAnswer(true);
-    const onChangeAnswerValue = (html: any) => setAnswerValue(html);
+    const onChangeAnswerValue = (html: string) => setAnswerValue(html);
 
     const delTagsAndTrim = (str) => str.replace(/(<([^>]+)>)/ig, '').trim();
     const onClickSaveAnswer = () => {

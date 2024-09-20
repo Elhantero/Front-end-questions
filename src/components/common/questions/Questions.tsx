@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import SingleQuestion from "../singleQuestion/SingleQuestion";
+import SingleQuestionContainer from "../singleQuestion/SingleQuestionContainer";
 import {RootStateType} from "../../../store";
 import {selectQuestionsOrder} from "../../../selectors/questionsSelectors";
 
@@ -8,7 +8,7 @@ const Questions = ({ questionsOrder } : { questionsOrder: number[] }) => {
   return (
     <>
       {questionsOrder.map((id) => (
-        <SingleQuestion key={id} questionId={id} />
+        <SingleQuestionContainer key={id} questionId={id} />
       ))}
     </>
   );

@@ -71,7 +71,7 @@ const questionsSlice = createSlice({
     statistic: {},
   },
   reducers: {
-    deleteQuestion: (state: QuestionState, action) => {
+    deleteQuestion: (state: QuestionState, action) : void => {
       const { questionId } = action.payload;
       delete state.data[questionId];
       const newOrder = [...state.order];
