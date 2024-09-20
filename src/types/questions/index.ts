@@ -2,7 +2,7 @@ export type SingleQuestion = {
     questionId: number,
     text: string,
     categoryId?: number,
-    readyStatus?: number,
+    readyStatus: number,
     rating?: number,
     answer?: string,
 };

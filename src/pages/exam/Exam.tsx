@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, connect} from "react-redux";
-import {Article, Nav} from "../styled/styledComponents";
-import ExamBlock from "../common/ExamBlock";
-import Layout from "../common/layout/Layout";
+import {Article, Nav} from "../../components/styled/styledComponents";
+import ExamBlock from "../../components/common/ExamBlock";
+import Layout from "../../components/common/layout/Layout";
 import {AppDispatch, RootState} from "../../store";
 import {fetchQuestionsForExam, fetchQuestionsStatistic} from "../../slices/questionsSlices";
 import {selectTotalQuestionsCount, selectReadyQuestionsCount} from "../../selectors/questionsSelectors";

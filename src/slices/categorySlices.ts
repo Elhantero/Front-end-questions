@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import keyBy from 'lodash/keyBy';
-import { CategoriesState, CategoryNameToIdMap, SingleCategory} from '../helpers/tsTypes/reduxState/categories';
+import { CategoriesState, CategoryNameToIdMap, SingleCategory} from '../types/categories';
 
 export const fetchCategories = createAsyncThunk(
   'categories/fetchAll',

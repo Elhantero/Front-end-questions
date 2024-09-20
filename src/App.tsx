@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import Main from './components/pages/Main';
-import Exam from './components/pages/Exam';
+import Main from './pages/main/Main';
+import Exam from './pages/exam/Exam';
 import { store } from "./store";
 
 const App = () => (

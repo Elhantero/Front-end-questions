@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { selectQuestionById } from '../../selectors/questionsSelectors';
 import { deleteQuestion, updateQuestion } from '../../slices/questionsSlices';
 import Rating from './Rating';
-import * as questionsTypes from "../../helpers/tsTypes/reduxState/questions";
+import * as questionsTypes from "../../types/questions";
 import { RootState} from "../../store";
-import useInput from "../hooks/useInput";
+import useInput from "../../hooks/useInput";
 
 interface WrapperProps {
   $readyStatus?: boolean,

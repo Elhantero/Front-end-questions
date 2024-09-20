@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import keyBy from 'lodash/keyBy';
 import remove from 'lodash/remove';
-import {SingleQuestion, QuestionState} from "../helpers/tsTypes/reduxState/questions";
+import {SingleQuestion, QuestionState} from "../types/questions";
 
 export const fetchQuestionsByCategoryId = createAsyncThunk(
   'questions/fetchByCategoryId',

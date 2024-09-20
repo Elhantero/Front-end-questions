@@ -5,7 +5,7 @@ import styled from "styled-components";
 import {RootState} from "../../../../store";
 import {selectQuestionById} from "../../../../selectors/questionsSelectors";
 import {connect, useDispatch} from "react-redux";
-import * as questionsTypes from "../../../../helpers/tsTypes/reduxState/questions";
+import * as questionsTypes from "../../../../types/questions";
 import {updateQuestion} from "../../../../slices/questionsSlices";
 import {Btn} from "../questionText/styledComponents";
 

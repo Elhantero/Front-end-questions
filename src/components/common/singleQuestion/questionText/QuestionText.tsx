@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {connect, useDispatch} from "react-redux";
-import useInput from "../../../hooks/useInput";
+import useInput from "../../../../hooks/useInput";
 import {AppDispatch, RootState} from "../../../../store";
 import {selectQuestionById} from "../../../../selectors/questionsSelectors";
-import * as questionsTypes from "../../../../helpers/tsTypes/reduxState/questions";
+import * as questionsTypes from "../../../../types/questions";
 import {Wrapper, BtnWrapper, Label, Btn} from "./styledComponents";
 import {deleteQuestion, updateQuestion} from "../../../../slices/questionsSlices";
 

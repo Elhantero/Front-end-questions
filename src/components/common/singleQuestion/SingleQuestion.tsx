@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { selectQuestionById } from '../../../selectors/questionsSelectors';
-import * as questionsTypes from "../../../helpers/tsTypes/reduxState/questions";
+import * as questionsTypes from "../../../types/questions";
 import { RootState} from "../../../store";
 import QuestionText from "./questionText/QuestionText";
 import QuestionAnswer from "./questionAnswer/QuestionAnswer";
